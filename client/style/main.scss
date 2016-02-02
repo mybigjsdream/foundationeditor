@@ -1,0 +1,43 @@
+@import "fsettings";
+@import "{zurb:foundation-sites}/scss/foundation";
+//@import "../foundation-icons.css";
+@include foundation-everything;
+
+.button-group {
+  margin-bottom: 0rem;
+}
+
+.top-bar a {
+  color: #ffffff;
+}
+
+.menu li {
+  padding-left: 0.25rem;
+}
+
+.row {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  max-width: 100%;
+}
+
+.form-control {
+  overflow-y: scroll;
+}
+
+.editor-content {
+  outline:none;
+  min-height: 30rem; //测试
+  height: 30rem;
+  margin-top: -1.5rem;
+}
+
+.preview-container {
+  word-wrap: break-word;
+  overflow-y: scroll;
+}
+
+.preview-content {
+  min-height: 36rem; //测试
+  height:  36rem;
+}
