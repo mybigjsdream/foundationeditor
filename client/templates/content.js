@@ -5,7 +5,9 @@
 Template.content.onCreated(
     () => {
         Session.setDefault('text', '');
+        //console.log(template.find('[name=textarea]'));
     }
+    //console.log($(e.target).find('[name=textarea]'))
 );
 
 Template.content.helpers({
@@ -15,12 +17,22 @@ Template.content.helpers({
 });
 
 Template.content.events({
-    'keyup .editor-content': (e, t) => {
+    'keyup .editor-content': (e) => {
         var $textarea = $(e.target).find('[name=textarea]');
         Session.set('text', $textarea.context.innerText);
     },
-    'click .editor-content': (e, t) => {
+    //'keyup .editor-content': (e) => {
+    //    var $textarea = $(e.target).find('[name=textarea]');
+    //    Session.set('text', $textarea.context.innerText);
+        //console.log($textarea);
+        //new_content = "<span>" + $textarea.context.innerText + "</span>";
+        //$textarea.context.innerHTML= new_content;
+    //},
+    'click .editor-content': (e) => {
         console.log(e.currentTarget);
         console.log(e);
-    }
+    },
+    //'scroll .editor-control': (e) => {
+    //    console.log('haha');
+    //}
 });
