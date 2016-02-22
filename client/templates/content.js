@@ -4,22 +4,25 @@
 
 Template.content.onCreated(
     () => {
-        Session.setDefault('text', '');
-        //console.log(template.find('[name=textarea]'));
+        this.templateDictionary = new ReactiveDict();
+        this.templateDictionary.set('countID', 0);
+        //this.$('[name=textarea]').html("<b>Hello world!</b>");
+        //this.$('[name=textarea]').hide();
+        //this.templateDictionary.set('text', '');
+        //console.log('hahah' + this.$('[name=textarea]').val());
     }
-    //console.log($(e.target).find('[name=textarea]'))
 );
 
 Template.content.helpers({
     content: () => {
-        return marked(Session.get('text')) + '<div id="msg_end"></div>';
+        return marked(this.templateDictionary.get('text') || '');
     }
 });
 
 Template.content.events({
     'keyup .editor-content': (e) => {
         var $textarea = $(e.target).find('[name=textarea]');
-        Session.set('text', $textarea.context.innerText);
+        this.templateDictionary.set('text', $textarea.context.innerText);
     },
     //'keyup .editor-content': (e) => {
     //    var $textarea = $(e.target).find('[name=textarea]');
@@ -28,10 +31,10 @@ Template.content.events({
         //new_content = "<span>" + $textarea.context.innerText + "</span>";
         //$textarea.context.innerHTML= new_content;
     //},
-    'click .editor-content': (e) => {
-        console.log(e.currentTarget);
-        console.log(e);
-    },
+    //'click .editor-content': (e) => {
+    //    console.log(e.currentTarget);
+    //    console.log(e);
+    //},
     //'scroll .editor-control': (e) => {
     //    console.log('haha');
     //}
