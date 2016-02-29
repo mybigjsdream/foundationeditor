@@ -21,5 +21,5 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 
 iron:router
 zurb:foundation-sites   # it seems like this has contain fourseven:scss
-shanyue:marked
 reactive-dict
+shanyue:marked

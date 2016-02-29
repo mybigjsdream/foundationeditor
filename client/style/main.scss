@@ -2,6 +2,8 @@
 @import "{zurb:foundation-sites}/scss/foundation";
 @include foundation-everything;
 
+$base-content-height: 3rem;
+
 .button-group {
   margin-bottom: 0rem;
 }
@@ -32,8 +34,8 @@
 
 .editor-content {
   outline:none;
-  min-height: 30rem; //测试
-  height: 30rem;
+  min-height: $base-content-height; //测试
+  height: $base-content-height;
   margin-top: -1.5rem;
 }
 
@@ -45,6 +47,6 @@
 }
 
 .preview-content {
-  min-height: 36rem; //测试
-  height:  36rem;
+  min-height: $base-content-height+6rem; //测试
+  height:  $base-content-height+6rem;
 }
