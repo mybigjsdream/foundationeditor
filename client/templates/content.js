@@ -2,10 +2,15 @@
  * Created by dengjing on 16/2/1.
  */
 
-var getCurrentLine = (currentNode, isEnter) =>{
-    let i = 0;
+var getCurrentLine = (currentNode, e) =>{ //已知的bug：1.回车后删除的节点浏览器认为还存在，影响计算line 2.第一行是回车，判断不是节点
+    let isEnter = false, i = 0;
+    if(e.keyCode == 13){
+        isEnter = true;
+    }else{
+        isEnter = false;
+    }
     while(currentNode != null){
-        console.log(currentNode);
+        //console.log(currentNode);
         if(currentNode.data == '\n'){
             i++;
         }
@@ -20,7 +25,6 @@ var getCurrentLine = (currentNode, isEnter) =>{
 Template.content.onCreated(
     () => {
         this.templateDictionary = new ReactiveDict();
-        //this.templateDictionary.set('countID', 0);
     }
 );
 
@@ -30,31 +34,15 @@ Template.content.helpers({
     }
 });
 
-Template.content.events({
+Template.content.events({ //58 根据字体确定
     'keyup .editor-content': (e) => {
-        if(e.keyCode == 13){
-            var $textarea = $(e.target).find('[name=textarea]');
-            this.templateDictionary.set('text', $textarea.context.innerText);
-            console.log(getCurrentLine(window.getSelection().getRangeAt(0).startContainer, true));
-        } else{
-            var $textarea = $(e.target).find('[name=textarea]');
-            this.templateDictionary.set('text', $textarea.context.innerText);
-            console.log(getCurrentLine(window.getSelection().getRangeAt(0).startContainer, false));
-        }
+        var $textarea = $(e.target).find('[name=textarea]');
+        this.templateDictionary.set('text', $textarea.context.innerText);
+        var line = getCurrentLine(window.getSelection().getRangeAt(0).startContainer, e);
+        console.log(line);
+        var h = this.$('#line-'+line)[0].offsetTop;
+        console.log(h);
+        console.log(this.$('.editor-control'));
+        this.$('.preview-container').scrollTop(h-58);
     },
-
-
-    /*
-    'focus .editor-content': (e) => {
-        console.log(e);
-    },
-
-    'blur .editor-content': (e, t) => {
-        //console.log(e.window.getSelection().getRangeAt(0));
-        //window.getSelection().getRangeAt(0).setStart($(e.target).find('#star'), 0);
-        //console.log(window.getSelection().focusNode.parentNode);
-        console.log(window.getSelection().getRangeAt(0));
-        console.log(window.getSelection().getRangeAt(0).startContainer.previousSibling.previousSibling);
-    }
-    */
 });
