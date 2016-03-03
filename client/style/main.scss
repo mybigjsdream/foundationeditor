@@ -50,3 +50,6 @@ $base-content-height: 30rem;
   min-height: $base-content-height+6rem; //测试
   height:  $base-content-height+6rem;
 }
+
+//加载具体两边字体什么的配置
+@import "preview";

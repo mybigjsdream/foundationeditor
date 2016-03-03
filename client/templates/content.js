@@ -12,7 +12,6 @@ var getCurrentLine = (currentNode, e) =>{ //已知的bug：1.回车后删除的�
         isEnter = false;
     }
     while(currentNode != null){
-        //console.log(currentNode);
         if(currentNode.data == '\n'){
             i++;
         }
@@ -28,8 +27,12 @@ var scrollPre = (e) => {
     var $textarea = $(e.target).find('[name=textarea]');
     this.templateDictionary.set('text', $textarea.context.innerText);
     var line = getCurrentLine(window.getSelection().getRangeAt(0).startContainer, e);
-    var h = this.$('#line-'+line)[0].offsetTop - baseFontSize;
-    this.$('.preview-container').animate({scrollTop: h}, 50);
+    console.log(line);
+    console.log(this.$('#line-'+line).length);
+    if(this.$('#line-'+line).length > 0){
+        var h = this.$('#line-'+line)[0].offsetTop - baseFontSize;
+        this.$('.preview-container').animate({scrollTop: h}, 50);
+    }
 };
 
 Template.content.onCreated(
@@ -40,6 +43,11 @@ Template.content.onCreated(
 
 Template.content.helpers({
     content: () => {
+        marked.setOptions({
+            highlight: (code) => {
+                return hljs.highlightAuto(code).value;
+            }
+        });
         return marked(this.templateDictionary.get('text') || '');
     }
 });

@@ -23,3 +23,4 @@ iron:router
 zurb:foundation-sites   # it seems like this has contain fourseven:scss
 reactive-dict
 shanyue:marked
+shanyue:meteor-highlight
