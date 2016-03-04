@@ -28,14 +28,15 @@ $base-content-height: 30rem;
 
 //editor 部分的布局
 .editor-control {
+  word-wrap: break-word;
   overflow-y: scroll;
   background-color: aliceblue;
 }
 
 .editor-content {
   outline:none;
-  min-height: $base-content-height; //测试
-  height: $base-content-height;
+  min-height: $base-content-height+4rem; //测试
+  height: $base-content-height+4rem;
   margin-top: -1.5rem;
 }
 
@@ -47,9 +48,8 @@ $base-content-height: 30rem;
 }
 
 .preview-content {
-  min-height: $base-content-height+6rem; //测试
-  height:  $base-content-height+6rem;
+  min-height: $base-content-height+7rem; //测试
+  height:  $base-content-height+7rem;
 }
-
-//加载具体两边字体什么的配置
+//渲染完成后的通用布局
 @import "preview";

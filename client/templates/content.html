@@ -1,13 +1,16 @@
 <template name="content">
     <div class="small-6 large-6 columns">
         <div class="preview-container">
-            <div id="wmd-preview" class="preview-content">{{{content}}}</div>
+            <div class="preview-content">
+                <div class="base-content">
+                {{{content}}}
+                </div>
+            </div>
         </div>
     </div>
     <div class="small-6 large-6 columns">
-        <pre id="wmd-input" class="editor-control">
+        <pre class="editor-control">
 			<div class="editor-content" name="textarea" contenteditable=plaintext-only></div>
-			<div class="editor-margin"></div>
 		</pre>
     </div>
 </template>
