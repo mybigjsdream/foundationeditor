@@ -4,7 +4,9 @@
 
 var baseFontSize = 58;
 
-var getCurrentLine = (currentRange) =>{ //已知的bug：如果是复制的内容会被当做一整块node，也有好处，解决方式，可以考虑格式化加上行数
+var getCurrentLine = (currentRange) => {
+    //已知的bug：如果是复制的内容会被当做一整块node，也有好处，解决方式，可以考虑格式化加上行数
+    //也可以使用监控86 keycode解析
     var currentNode = currentRange.commonAncestorContainer;
     var i = 1;
     while(currentNode != null){
@@ -14,11 +16,25 @@ var getCurrentLine = (currentRange) =>{ //已知的bug：如果是复制的内�
     return i;
 };
 
+var sanitizePasteRange = (e) => {
+    console.log(window.getSelection().getRangeAt(0));
+    var baseNode = window.getSelection().getRangeAt(0).commonAncestorContainer;
+    var nodeValue = baseNode.nodeValue;
+    var datas = nodeValue.split('\n');
+    for(let i = 0; i < datas.length; i++){
+        var snNode = document.createElement('text');
+        snNode.previousSibling = baseNode.previousSibling;
+        snNode.nextSibling = baseNode.nextSibling;
+        snNode.nodeValue = datas[i] + '\n';
+        baseNode = snNode;
+    }
+};
+
 var scrollPre = (e) => {
     var $textarea = $(e.target).find('[name=textarea]');
     this.templateDictionary.set('text', $textarea.context.innerText);
+    sanitizePasteRange(e);
     var line = getCurrentLine(window.getSelection().getRangeAt(0));
-    console.log(line);
     if(this.$('#line-'+line).length > 0){
         var h = this.$('#line-'+line)[0].offsetTop - baseFontSize;
         this.$('.preview-container').animate({scrollTop: h}, 50);
