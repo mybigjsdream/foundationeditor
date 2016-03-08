@@ -14,7 +14,10 @@ var getCurrentLine = (currentRange) => {
     }
     while(currentNode != null){
         var nvalue = currentNode.nodeValue;
-        nvalue = (nvalue || '').slice(0, currentOffset);
+        if(currentOffset != null) {
+            nvalue = (nvalue || '').slice(0, currentOffset);
+            currentOffset = null;
+        }
         i = i + (nvalue || '').split('\n').length - 1;
         currentNode = currentNode.previousSibling;
     }
@@ -26,6 +29,11 @@ var scrollPre = (e) => {
     var $textarea = $(e.target).find('[name=textarea]');
     this.templateDictionary.set('text', $textarea.context.innerText);
     var line = getCurrentLine(window.getSelection().getRangeAt(0));
+    var count = 0;
+    while(this.$('#line-'+line).length == 0 && count < 10 && line > 1) {
+        line -= 1;
+        count += 1;
+    }
     if(this.$('#line-'+line).length > 0){
         var h = this.$('#line-'+line)[0].offsetTop - baseFontSize;
         this.$('.preview-container').animate({scrollTop: h}, 50);
