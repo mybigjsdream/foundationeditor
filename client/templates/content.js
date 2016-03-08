@@ -31,7 +31,7 @@ var scrollPre = (e) => {
     this.templateDictionary.set('text', $textarea.context.innerText);
     var line = getCurrentLine(window.getSelection().getRangeAt(0));
     var count = 0;
-    while(line == 1 && this.$('.base-content>#line-'+line).length == 0 ) { ////专门处理头几行全是回车的情况
+    while(line == 1 && this.$('.base-content>#line-'+line).length == 0 ) { //专门处理头几行全是回车的情况
         line += 1;
     }
     while(this.$('.base-content>#line-'+line).length == 0 && count < 10 && line > 1) {
