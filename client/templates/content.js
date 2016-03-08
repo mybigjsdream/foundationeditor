@@ -8,10 +8,7 @@ var getCurrentLine = (currentRange) => {
     var currentNode = currentRange.commonAncestorContainer;
     var currentOffset = currentRange.startOffset;
     var i = 1;
-    if((currentNode != null) && (currentNode.nodeValue || '').split('\n').length == 2){ //第一次时候 计算当前位置的回车
-        i = i + (currentNode.nodeValue || '').split('\n').length - 2;
-        currentNode = currentNode.previousSibling;
-    }
+    var beforeValue = '';
     while(currentNode != null){
         var nvalue = currentNode.nodeValue;
         if(currentOffset != null) {
@@ -19,7 +16,11 @@ var getCurrentLine = (currentRange) => {
             currentOffset = null;
         }
         i = i + (nvalue || '').split('\n').length - 1;
+        beforeValue += (nvalue || '').split('\n').join('');
         currentNode = currentNode.previousSibling;
+    }
+    if(beforeValue == ''){ //专门处理头几行全是回车的情况
+        return 1;
     }
     return i;
 };
@@ -30,12 +31,15 @@ var scrollPre = (e) => {
     this.templateDictionary.set('text', $textarea.context.innerText);
     var line = getCurrentLine(window.getSelection().getRangeAt(0));
     var count = 0;
-    while(this.$('#line-'+line).length == 0 && count < 10 && line > 1) {
+    while(line == 1 && this.$('.base-content>#line-'+line).length == 0 ) { ////专门处理头几行全是回车的情况
+        line += 1;
+    }
+    while(this.$('.base-content>#line-'+line).length == 0 && count < 10 && line > 1) {
         line -= 1;
         count += 1;
     }
-    if(this.$('#line-'+line).length > 0){
-        var h = this.$('#line-'+line)[0].offsetTop - baseFontSize;
+    if(this.$('.base-content>#line-'+line).length > 0){
+        var h = this.$('.base-content>#line-'+line)[0].offsetTop - baseFontSize;
         this.$('.preview-container').animate({scrollTop: h}, 50);
     }
 };
