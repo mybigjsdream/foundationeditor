@@ -16,9 +16,21 @@ Template.head.onCreated(function(){  //用箭头函数有坑，我去!!!
     }
 );
 */
-//Template.head.onCreated(() => {
-//    console.log(this);
-//});
+Template.head.onCreated(() => {
+    this.headDictionary = new ReactiveDict();
+    this.headDictionary.set('back_count', 0);
+    Template.instance().autorun(() => {
+        Template.instance().subscribe('cache_md', () => {
+            let cursor = cache_md.find({}, {sort: {cTime: -1}});
+            let cache_object = cursor.fetch()[0];
+            if(cache_object){
+                this.templateDictionary.set('text', cache_object['raw_html']);
+                this.$('.editor-content').text(cache_object['raw_html']);
+            }
+        });
+        Template.instance().subscribe('publish_article');
+    });
+});
 
 Template.head.onRendered(
     () => {
@@ -26,12 +38,6 @@ Template.head.onRendered(
             this.$('.fi-minus')[0].click();
         };
         interval = setInterval(mockClick, 600000000);
-        let cursor = cache_md.find({}, {sort: {cTime: -1}});
-        let cache_object = cursor.fetch()[0];
-        if(cache_object){
-            this.templateDictionary.set('text', cache_object['raw_html']);
-            this.$('.editor-content').text(cache_object['raw_html']);
-        }
     }
 );
 
