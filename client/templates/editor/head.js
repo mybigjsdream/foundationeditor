@@ -42,10 +42,10 @@ Template.head.events({
         } catch (e) {
             console.log(e);
         }
-        if(this.templateDictionary.get('text') != text && this.templateDictionary.get('text') != ''){
-            let raw_text = this.templateDictionary.get('text');
+        let react_text = this.templateDictionary.get('text');
+        if(react_text != text && react_text.split('\n').join('') != ''){
             cache_md.insert({  //这个操作 估计得放放服务器端
-                raw_html: raw_text,
+                raw_html: react_text,
                 cTime: new Date().getTime()
             });
         }
@@ -58,5 +58,38 @@ Template.head.events({
             this.$('.editor-content').text(cache_objects[1]['raw_html']);
             this.templateDictionary.set('text', cache_objects[1]['raw_html']);
         }
+    },
+    'click .fi-monitor': (e) => {
+        let text = this.templateDictionary.get('text');
+        //console.log(this.$('.base-content')[0].outerHTML);
+        let head = '';
+        if(text.split('\n').join('') == ''){
+            FlowRouter.go('/404');
+        }else{
+            if(text.split('\n').length == 1){
+                head = text;
+            }else{
+                head = text.split('\n')[0];
+            }
+        }
+        //console.log(CryptoJS.MD5(head).toString());
+        let html = this.$('.base-content')[0].outerHTML;
+        let id = CryptoJS.MD5(head).toString(); //之后可能要根据作者+标题吧 再加时间？
+        //console.log(publish_article.findOne({_id: id}));
+        let article = publish_article.findOne({_id: id});
+        if(!article){
+            publish_article.insert({
+                _id: id,
+                head: head,
+                html: html,
+                cTime: new Date().getTime()
+            });
+            FlowRouter.go(`/blog/${id}`);
+        }else{
+            FlowRouter.go(`/blog/${id}`);
+        }
+        //console.log(head);
+        //publish_article.
+        //FlowRouter.go('/blog/123');
     }
 });
