@@ -12,7 +12,6 @@ Template.head.onCreated(() => {
             if(cache_object){
                 this.templateDictionary.set('text', cache_object['raw_html']);
                 this.$('.editor-content').text(cache_object['raw_html']);
-                //this.headDictionary.set('back_count', 0);
             }
         });
         Template.instance().subscribe('publish_article');
@@ -36,33 +35,33 @@ Template.head.onDestroyed(
 
 Template.head.events({
     'click .fi-minus': (e) => {
-        let raw_html = this.$('.editor-content')[0].innerText;
+        //let raw_html = this.$('.editor-content')[0].innerText;
+        this.templateDictionary.set('text', this.$('.editor-content')[0].innerText);
         let text = '';
         try {
             text = cache_md.find({}, {sort: {cTime: -1}}).fetch()[0]['raw_html'];
         } catch (e) {
             console.log(e);
         }
-        if(raw_html != text && raw_html != ''){
+        if(this.templateDictionary.get('text') != text && this.templateDictionary.get('text') != ''){
+            let raw_text = this.templateDictionary.get('text');
             cache_md.insert({  //这个操作 估计得放放服务器端
-                raw_html: raw_html,
+                raw_html: raw_text,
                 cTime: new Date().getTime()
             });
-            //this.headDictionary.set('back_count', 0);
         }
     },
     'click .fi-arrow-left': (e) => {
-        //let count = this.headDictionary.get('back_count') + 1;
         let cursor = cache_md.find({}, {sort: {cTime: -1}});
-        //let cache_object = cursor.fetch()[count-1];
-        let cache_object = cursor.fetch()[0];
-        if(cache_object){
-            this.$('.editor-content').text(cache_object['raw_html']);
-            //this.headDictionary.set('back_count', count);
-            this.templateDictionary.set('text', cache_object['raw_html']);
-            cache_md.remove({_id: cache_object._id});
-        //} else {
-        //    this.headDictionary.set('back_count', count - 1);
+        let cache_objects = cursor.fetch();
+        if(cache_objects[1]){
+            //this.$('.editor-content').text(cache_object['raw_html']);
+            //this.templateDictionary.set('text', cache_object['raw_html']);
+            cache_md.remove({_id: cache_objects[0]._id});
+            this.$('.editor-content').text(cache_objects[1]['raw_html']);
+            this.templateDictionary.set('text', cache_objects[1]['raw_html']);
+        } else {
+            ;
         }
     }
 });
