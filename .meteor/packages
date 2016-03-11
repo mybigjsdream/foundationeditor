@@ -19,7 +19,9 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 #autopublish             # Publish all data to the clients (for prototyping)
 #insecure                # Allow all DB writes from clients (for prototyping)
 
-iron:router
+#iron:router
+kadira:flow-router
+kadira:blaze-layout
 zurb:foundation-sites   # it seems like this has contain fourseven:scss
 reactive-dict
 shanyue:meteor-highlight

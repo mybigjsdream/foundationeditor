@@ -27,8 +27,9 @@ var getCurrentLine = (currentRange) => {
 
 
 var scrollPre = (e) => {
-    var $textarea = $(e.target).find('[name=textarea]');
-    this.templateDictionary.set('text', $textarea.context.innerText);
+    //var $textarea = $(e.target).find('[name=textarea]');
+    //this.templateDictionary.set('text', $textarea.context.innerText);
+    this.templateDictionary.set('text', this.$('.editor-content')[0].innerText);
     var line = getCurrentLine(window.getSelection().getRangeAt(0));
     var count = 0;
     while(line == 1 && this.$('.base-content>#line-'+line).length == 0 ) { //专门处理头几行全是回车的情况
@@ -64,8 +65,10 @@ Template.content.helpers({
 Template.content.events({ //58 根据字体确定
     'keyup .editor-content': (e) => {
         scrollPre(e);
+        this.headDictionary.set('back_count', 0);
     },
     'click .editor-content': (e) => {
         scrollPre(e);
+        this.headDictionary.set('back_count', 0);
     },
 });

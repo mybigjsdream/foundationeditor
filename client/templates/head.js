@@ -35,7 +35,6 @@ Template.head.onDestroyed(
 
 Template.head.events({
     'click .fi-minus': (e) => {
-        //let raw_html = this.$('.editor-content')[0].innerText;
         this.templateDictionary.set('text', this.$('.editor-content')[0].innerText);
         let text = '';
         try {
@@ -55,13 +54,9 @@ Template.head.events({
         let cursor = cache_md.find({}, {sort: {cTime: -1}});
         let cache_objects = cursor.fetch();
         if(cache_objects[1]){
-            //this.$('.editor-content').text(cache_object['raw_html']);
-            //this.templateDictionary.set('text', cache_object['raw_html']);
             cache_md.remove({_id: cache_objects[0]._id});
             this.$('.editor-content').text(cache_objects[1]['raw_html']);
             this.templateDictionary.set('text', cache_objects[1]['raw_html']);
-        } else {
-            ;
         }
     }
 });

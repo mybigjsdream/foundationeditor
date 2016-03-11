@@ -6,7 +6,7 @@ Meteor.publish('publish_article', () => {
     return publish_article.find();
 });
 
-Meteor.publish('cache_article', () => {
+Meteor.publish('cache_md', () => {
     //check(id, String);
-    return cache_article.find();
+    return cache_md.find();
 });
