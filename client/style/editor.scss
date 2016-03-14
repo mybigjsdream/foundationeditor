@@ -1,0 +1,57 @@
+@import "fsettings";
+@import "{zurb:foundation-sites}/scss/foundation";
+@include foundation-everything;
+
+@import "notFound";
+
+$base-content-height: 31rem;
+
+.button-group {
+  margin-bottom: 0rem;
+}
+
+.top-bar a {
+  color: #ffffff;
+}
+
+.menu li {
+  padding-left: 0.25rem;
+}
+
+.row {
+  margin-left: 1rem;
+  margin-right: 1rem;
+  max-width: 100%;
+}
+
+.small-6, .large-6 {
+  padding: 0.1rem;
+}
+
+//editor 部分的布局
+.editor-control {
+  word-wrap: break-word;
+  overflow-y: scroll;
+  background-color: aliceblue;
+}
+
+.editor-content {
+  outline:none;
+  min-height: $base-content-height+4rem; //测试
+  height: $base-content-height+4rem;
+  margin-top: -1.5rem;
+}
+
+//预览部分的布局
+.preview-container {
+  word-wrap: break-word;
+  overflow-y: scroll;
+  background-color: #f2f2f2;
+}
+
+.preview-content {
+  min-height: $base-content-height+7rem; //测试
+  height:  $base-content-height+7rem;
+}
+//渲染完成后的通用布局
+@import "preview";

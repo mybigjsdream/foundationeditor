@@ -61,7 +61,6 @@ Template.head.events({
     },
     'click .fi-monitor': (e) => {
         let text = this.templateDictionary.get('text');
-        //console.log(this.$('.base-content')[0].outerHTML);
         let head = '';
         if(text.split('\n').join('') == ''){
             FlowRouter.go('/404');
@@ -72,10 +71,9 @@ Template.head.events({
                 head = text.split('\n')[0];
             }
         }
-        //console.log(CryptoJS.MD5(head).toString());
+
         let html = this.$('.base-content')[0].outerHTML;
         let id = CryptoJS.MD5(head).toString(); //之后可能要根据作者+标题吧 再加时间？
-        //console.log(publish_article.findOne({_id: id}));
         let article = publish_article.findOne({_id: id});
         if(!article){
             publish_article.insert({
@@ -88,8 +86,5 @@ Template.head.events({
         }else{
             FlowRouter.go(`/blog/${id}`);
         }
-        //console.log(head);
-        //publish_article.
-        //FlowRouter.go('/blog/123');
     }
 });
