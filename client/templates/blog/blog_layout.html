@@ -1,0 +1,12 @@
+<template name="blog_layout">
+    {{> foundation}}
+    <div class="top-bar">
+        {{> blog_head}}
+    </div>
+    <div class="row">
+        {{> Template.dynamic template=blog_content}}
+    </div>
+    <div class="footer">
+    {{> blog_footer}}
+    </div>
+</template>

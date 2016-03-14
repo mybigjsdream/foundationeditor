@@ -22,9 +22,9 @@ ecmascript              # Enable ECMAScript2015+ syntax in app code
 #iron:router
 kadira:flow-router
 kadira:blaze-layout
-zurb:foundation-sites   # it seems like this has contain fourseven:scss
 reactive-dict
 shanyue:meteor-highlight
 shanyue:marked
 check
 jparker:crypto-md5
+zurb:foundation-sites

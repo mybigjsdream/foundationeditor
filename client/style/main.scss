@@ -1,1 +1,12 @@
+@import "fsettings";
+@import "{zurb:foundation-sites}/scss/foundation";
+@include foundation-everything;
+
+
+//@import '{zurb:motion-ui}/src/motion-ui';
+//@include motion-ui-transitions;
+//@include motion-ui-animations;
+
+
 @import "editor";
+@import "blog";
