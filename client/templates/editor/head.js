@@ -14,7 +14,7 @@ Template.head.onCreated(() => {
                 this.$('.editor-content').text(cache_object['raw_html']);
             }
         });
-        Template.instance().subscribe('publish_article');
+        //Template.instance().subscribe('publish_article');
     });
 });
 

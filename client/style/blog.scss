@@ -1,3 +1,28 @@
+.blog_row{
+  .row {
+    margin-left: 5%;
+    margin-right: 5%;
+    max-width: 100%;
+  }
+}
+
+.blog_head{
+  .top-bar-left{
+    margin-left: 5%;
+    max-width: 100%;
+  }
+  .top-bar-right{
+    margin-right: 5%;
+    max-width: 100%;
+  }
+}
+
+.blog_content{
+  margin-left: 20%;
+  margin-right: 20%;
+  max-width: 100%;
+}
+
 .bfooter {
   padding-top: 1rem;
   padding-bottom: 1rem;
