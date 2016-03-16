@@ -14,6 +14,8 @@ Template.blog_content.onCreated(() => {
             if(one){
                 blog_content = one.html;
                 this.blogDictionary.set('blog', blog_content);
+            }else{
+                FlowRouter.go('/404');
             }
         });
     });
