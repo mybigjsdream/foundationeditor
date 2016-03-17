@@ -75,26 +75,25 @@ Template.head.events({
         //let entitle = this.$('#entitle');
         //console.log(entitle);
         //return;
+        let article = {};
         let url_path = new Date().toLocaleDateString() + '/' + this.$('#entitle')[0].value; //之后做校验
-        //let html = this.$('.base-content')[0].outerHTML;
-
         let base_content = this.$('.base-content')[0].children;
-        //let text = this.$('.base-content:first:lt(1)');
         let title = base_content[0].outerHTML;
-        //let text = base_content.splice(1).map((x)=>{return x.outerHTML}).join('');
         let text = Array.from(base_content, x => x.outerHTML).splice(1).join('');
-
-
-        console.log(title);
-        console.log(text);
-
         let id = CryptoJS.MD5(url_path).toString(); //之后可能要根据作者+标题吧 再加时间？
+        article.url_path = url_path;
+        article.base_content = base_content;
+        article.title = title;
+        article.text = text;
+        article.id = id;
+        //校验
+        let error = validatePublishArticle(article);
         let article = publish_article.findOne({_id: id});
         if(!article){
             publish_article.insert({
                 _id: id,
-                head: head,
-                html: html,
+                title: title,
+                text: text,
                 urlPath: url_path,
                 cTime: new Date().getTime(),
                 updateTime: new Date().getTime()
@@ -105,7 +104,8 @@ Template.head.events({
                 {_id: id},
                 {
                     $set: {
-                        html: html,
+                        title: title,
+                        text: text,
                         updateTime: new Date().getTime()
                     }
                 }
