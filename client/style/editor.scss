@@ -33,13 +33,17 @@ $base-content-height: 31rem;
   word-wrap: break-word;
   overflow-y: scroll;
   background-color: aliceblue;
+  white-space : normal;
 }
 
 .editor-content {
+  white-space:pre-wrap;
+  white-space:-moz-pre-wrap;
+  white-space:-o-pre-wrap;
+  word-wrap:break-word;
   outline:none;
   min-height: $base-content-height+7rem; //测试
   height: $base-content-height+7rem;
-  //margin-top: -1.5rem;
 }
 
 //预览部分的布局
