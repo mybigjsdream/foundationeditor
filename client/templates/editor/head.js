@@ -72,7 +72,6 @@ Template.head.events({
             id: id
         };
         Meteor.call('validatePublishArticle', article, function(error, status){
-            console.log('dsfds');
             if (error){
                 throwError(error.reason);
                 FlowRouter.go('/404');
