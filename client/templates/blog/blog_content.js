@@ -12,7 +12,7 @@ Template.blog_content.onCreated(() => {
             let cursor = publish_article.find({_id: blog_id});
             let one = cursor.fetch()[0];
             if(one){
-                blog_content = one.html;
+                blog_content = one.text;
                 this.blogDictionary.set('blog', blog_content);
             }else{
                 FlowRouter.go('/404');

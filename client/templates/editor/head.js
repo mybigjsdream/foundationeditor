@@ -60,78 +60,49 @@ Template.head.events({
         }
     },
     'click .fi-monitor': (e) => {
-        //let text = this.templateDictionary.get('text');
-        //let head = '';
-        //if(text.split('\n').join('') == ''){
-        //    FlowRouter.go('/404');
-        //}else{
-        //    if(text.split('\n').length == 1){
-        //        head = text;
-        //    }else{
-        //        head = text.split('\n')[0];
-        //    }
-        //}
-
-        //let entitle = this.$('#entitle');
-        //console.log(entitle);
-        //return;
-        //let article = {};
         let url_path = new Date().toLocaleDateString() + '/' + this.$('#entitle')[0].value; //之后做校验
         let base_content = this.$('.base-content')[0].children;
         let title = base_content[0].outerHTML;
         let text = Array.from(base_content, x => x.outerHTML).splice(1).join('');
         let id = CryptoJS.MD5(url_path).toString(); //之后可能要根据作者+标题吧 再加时间？
-        //article.url_path = url_path;
-        //article.base_content = base_content;
-        //article.title = title;
-        //article.text = text;
-        //article.id = id;
         let article = {
             url_path: url_path,
             title: title,
             text: text,
             id: id
         };
-
-        //var art = EJSON.fromJSONValue(article);
-
-        //test
-        var t = Meteor.call('validatePublishArticle', article);
-        console.log(t);
-        //校验
-        //let error = validatePublishArticle(article);
-        //Meteor.call('validatePublishArticle', article, function(error, status){
-        //    console.log('dsfds');
-            //if (error){
-            //    throwError(error.reason);
-            //    FlowRouter.go('/404');
-            //}
-            //if(status){
-            //    let article = publish_article.findOne({_id: id});
-            //    if(!article){
-            //        publish_article.insert({
-            //            _id: id,
-            //            title: title,
-            //            text: text,
-            //            urlPath: url_path,
-            //            cTime: new Date().getTime(),
-            //            updateTime: new Date().getTime()
-            //        });
-            //        FlowRouter.go(`/blog/${id}`);
-            //    }else{
-            //        publish_article.update(
-            //            {_id: id},
-            //            {
-            //                $set: {
-            //                    title: title,
-            //                    text: text,
-            //                    updateTime: new Date().getTime()
-            //                }
-            //            }
-            //        );
-            //        FlowRouter.go(`/blog/${id}`);
-            //    }
-            //}
-        //});
+        Meteor.call('validatePublishArticle', article, function(error, status){
+            console.log('dsfds');
+            if (error){
+                throwError(error.reason);
+                FlowRouter.go('/404');
+            }
+            if(status){
+                let article = publish_article.findOne({_id: id});
+                if(!article){
+                    publish_article.insert({
+                        _id: id,
+                        title: title,
+                        text: text,
+                        urlPath: url_path,
+                        cTime: new Date().getTime(),
+                        updateTime: new Date().getTime()
+                    });
+                    FlowRouter.go(`/blog/${id}`);
+                }else{
+                    publish_article.update(
+                        {_id: id},
+                        {
+                            $set: {
+                                title: title,
+                                text: text,
+                                updateTime: new Date().getTime()
+                            }
+                        }
+                    );
+                    FlowRouter.go(`/blog/${id}`);
+                }
+            }
+        });
     }
 });
