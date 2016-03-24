@@ -60,16 +60,24 @@ Template.head.events({
         }
     },
     'click .fi-monitor': (e) => {
-        let url_path = new Date().toLocaleDateString() + '/' + this.$('#entitle')[0].value; //之后做校验
+        let userId = Meteor.userId() || '';
+        let base_content = this.$('.base-content')[0].children;
+        let url_path = new Date().toLocaleDateString() + '/' + this.$('#entitle')[0].value;
+        let id = CryptoJS.MD5(url_path + userId).toString(); //逻辑应该是没登录的不能发表别的匿名用户已经发表过的主题
+        /*
+        let userId = Meteor.userId() || '';
+        let url_path = new Date().toLocaleDateString() + '/' + this.$('#entitle')[0].value;
         let base_content = this.$('.base-content')[0].children;
         let title = base_content[0].outerHTML;
         let text = Array.from(base_content, x => x.outerHTML).splice(1).join('');
-        let id = CryptoJS.MD5(url_path).toString(); //之后可能要根据作者+标题吧 再加时间？
+        let id = CryptoJS.MD5(url_path + userId).toString(); //逻辑应该是没登录的不能发表别的匿名用户已经发表过的主题
+        */
         let article = {
+            id: id,
+            userId: userId,
             url_path: url_path,
-            title: title,
-            text: text,
-            id: id
+            title: base_content[0].outerHTML,
+            text: Array.from(base_content, x => x.outerHTML).splice(1).join('')
         };
         Meteor.call('validatePublishArticle', article, function(error, status){
             if (error){
@@ -77,13 +85,14 @@ Template.head.events({
                 FlowRouter.go('/404');
             }
             if(status){
-                let article = publish_article.findOne({_id: id});
-                if(!article){
+                let one = publish_article.findOne({_id: article.id});
+                if(!one){
                     publish_article.insert({
-                        _id: id,
-                        title: title,
-                        text: text,
-                        urlPath: url_path,
+                        _id: article.id,
+                        title: article.title,
+                        text: article.text,
+                        urlPath: article.url_path,
+                        userId: article.userId,
                         cTime: new Date().getTime(),
                         updateTime: new Date().getTime()
                     });
