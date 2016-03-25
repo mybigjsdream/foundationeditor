@@ -23,24 +23,6 @@ Template.head.onCreated(() => {
                         cTime: new Date().getTime()
                     });
                 });
-                /*
-                let cursor = cache_md.find({}, {sort: {cTime: -1}});
-                let cache_object = cursor.fetch()[0];
-                if(cache_object){
-                    this.templateDictionary.set('text', cache_object['raw_html']);
-                    this.$('.editor-content').text(cache_object['raw_html']);
-                }else{
-                    let url = 'https://raw.githubusercontent.com/mybigjsdream/mymarkhtml/master/README.md';
-                    let text = HTTP.get(url);
-                    this.templateDictionary.set('text', cache_object['raw_html']);
-                    this.$('.editor-content').text(cache_object['raw_html']);
-                    cache_md.insert({
-                        userId: '',
-                        raw_html: text,
-                        cTime: new Date().getTime()
-                    });
-                }
-                */
             });
         }else{
             Template.instance().subscribe('cache_md', () => {
