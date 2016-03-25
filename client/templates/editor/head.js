@@ -6,15 +6,52 @@ var interval;
 Template.head.onCreated(() => {
     this.headDictionary = new ReactiveDict();
     Template.instance().autorun(() => {
-        Template.instance().subscribe('cache_md', () => {
-            let cursor = cache_md.find({}, {sort: {cTime: -1}});
-            let cache_object = cursor.fetch()[0];
-            if(cache_object){
-                this.templateDictionary.set('text', cache_object['raw_html']);
-                this.$('.editor-content').text(cache_object['raw_html']);
-            }
-        });
         Template.instance().subscribe('publish_article');
+        let userId = Meteor.userId();
+        if(userId == null){
+            Template.instance().subscribe('cache_md', userId, () => {  //之后改为加载首页
+                let url = 'https://raw.githubusercontent.com/mybigjsdream/mymarkhtml/master/README.md';
+                HTTP.get(url, (e, r) => {
+                    if(e){
+                        alert(e);
+                    }
+                    this.templateDictionary.set('text', r);
+                    this.$('.editor-content').text(r);
+                    cache_md.insert({
+                        userId: '',
+                        raw_html: text,
+                        cTime: new Date().getTime()
+                    });
+                });
+                /*
+                let cursor = cache_md.find({}, {sort: {cTime: -1}});
+                let cache_object = cursor.fetch()[0];
+                if(cache_object){
+                    this.templateDictionary.set('text', cache_object['raw_html']);
+                    this.$('.editor-content').text(cache_object['raw_html']);
+                }else{
+                    let url = 'https://raw.githubusercontent.com/mybigjsdream/mymarkhtml/master/README.md';
+                    let text = HTTP.get(url);
+                    this.templateDictionary.set('text', cache_object['raw_html']);
+                    this.$('.editor-content').text(cache_object['raw_html']);
+                    cache_md.insert({
+                        userId: '',
+                        raw_html: text,
+                        cTime: new Date().getTime()
+                    });
+                }
+                */
+            });
+        }else{
+            Template.instance().subscribe('cache_md', () => {
+                let cursor = cache_md.find({}, {sort: {cTime: -1}});
+                let cache_object = cursor.fetch()[0];
+                if(cache_object){
+                    this.templateDictionary.set('text', cache_object['raw_html']);
+                    this.$('.editor-content').text(cache_object['raw_html']);
+                }
+            });
+        }
     });
 });
 
@@ -49,6 +86,17 @@ Template.head.events({
                 cTime: new Date().getTime()
             });
         }
+    },
+    'click .fi-bold': (e) => {
+        let url = 'https://raw.githubusercontent.com/mybigjsdream/mymarkhtml/master/README.md';
+        //let url = 'http://sina.xiaozufan.com/';
+        HTTP.get(url, (e, r) => {
+            if(e){
+                console.log(e);
+            }
+            let text = r;
+            console.log(text);
+        });
     },
     'click .fi-arrow-left': (e) => {
         let cursor = cache_md.find({}, {sort: {cTime: -1}});

@@ -6,7 +6,11 @@ Meteor.publish('publish_article', () => {
     return publish_article.find();
 });
 
-Meteor.publish('cache_md', () => {
-    //check(id, String);
-    return cache_md.find();
+Meteor.publish('cache_md', (userId) => {
+    //let userId = Meteor.userId();
+    if(userId != ''){
+        return cache_md.find({'userId': userId});
+    }else{   // 只是为了易读
+        return cache_md.find();
+    }
 });
