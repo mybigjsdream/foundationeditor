@@ -64,15 +64,7 @@ Template.head.events({
         let base_content = this.$('.base-content')[0].children;
         let url_path = new Date().toLocaleDateString() + '/' + this.$('#entitle')[0].value;
         let id = CryptoJS.MD5(url_path + userId).toString(); //逻辑应该是没登录的不能发表别的匿名用户已经发表过的主题
-        /*
-        let userId = Meteor.userId() || '';
-        let url_path = new Date().toLocaleDateString() + '/' + this.$('#entitle')[0].value;
-        let base_content = this.$('.base-content')[0].children;
-        let title = base_content[0].outerHTML;
-        let text = Array.from(base_content, x => x.outerHTML).splice(1).join('');
-        let id = CryptoJS.MD5(url_path + userId).toString(); //逻辑应该是没登录的不能发表别的匿名用户已经发表过的主题
-        */
-        let article = {
+        var article = {
             id: id,
             userId: userId,
             url_path: url_path,
@@ -80,11 +72,12 @@ Template.head.events({
             text: Array.from(base_content, x => x.outerHTML).splice(1).join('')
         };
         Meteor.call('validatePublishArticle', article, function(error, status){
-            if (error){
+            if(error){
                 throwError(error.reason);
                 FlowRouter.go('/404');
             }
-            if(status){
+            console.log(status);
+            if(status.url_test){
                 let one = publish_article.findOne({_id: article.id});
                 if(!one){
                     publish_article.insert({
@@ -98,18 +91,24 @@ Template.head.events({
                     });
                     FlowRouter.go(`/blog/${id}`);
                 }else{
-                    publish_article.update(
+                    if(!status.is_login){
+                        alert('已有匿名用户发表此主题');
+                        return;
+                    }
+                    publish_article.update(  //做用户的校验
                         {_id: id},
                         {
                             $set: {
-                                title: title,
-                                text: text,
+                                title: article.title,
+                                text: article.text,
                                 updateTime: new Date().getTime()
                             }
                         }
                     );
                     FlowRouter.go(`/blog/${id}`);
                 }
+            }else{
+                this.$('#entitle').css('border-color', 'red');
             }
         });
     }
