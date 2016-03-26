@@ -8,9 +8,10 @@ Meteor.publish('publish_article', () => {
 
 Meteor.publish('cache_md', (userId) => {
     //let userId = Meteor.userId();
-    if(userId != ''){
+    //console.log(userId);
+    if(userId != null){
         return cache_md.find({'userId': userId});
     }else{   // 只是为了易读
-        return cache_md.find();
+        return cache_md.find({'userId': ''});
     }
 });

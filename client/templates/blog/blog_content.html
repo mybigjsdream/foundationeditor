@@ -1,7 +1,12 @@
 <template name="blog_content">
     <div class="blog_content">
         <div class="base-content">
-            {{{base_content}}}
+            {{{blog_title}}}
+            <div class="tit">
+                上次修改时间：{{blog_ut}} <br>
+                <div class="aut">作者：{{blog_user}}</div>
+            </div>
+            {{{blog_text}}}
         </div>
     </div>
 </template>

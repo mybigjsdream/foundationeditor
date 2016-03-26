@@ -12,21 +12,19 @@ Template.head.onCreated(() => {
             Template.instance().subscribe('cache_md', userId, () => {  //之后改为加载首页
                 let url = 'https://raw.githubusercontent.com/mybigjsdream/mymarkhtml/master/README.md';
                 HTTP.get(url, (e, r) => {
-                    if(e){
+                    if(e) {
                         alert(e);
                     }
-                    this.templateDictionary.set('text', r);
-                    this.$('.editor-content').text(r);
-                    cache_md.insert({
-                        userId: '',
-                        raw_html: text,
-                        cTime: new Date().getTime()
-                    });
+                    if(r.statusCode != 200) {
+                        alert('网络错误'+r.statusCode);
+                    }
+                    this.templateDictionary.set('text', r.content);
+                    this.$('.editor-content').text(r.content);
                 });
             });
         }else{
-            Template.instance().subscribe('cache_md', () => {
-                let cursor = cache_md.find({}, {sort: {cTime: -1}});
+            Template.instance().subscribe('cache_md', userId, () => {
+                let cursor = cache_md.find({'userId': userId}, {sort: {cTime: -1}});
                 let cache_object = cursor.fetch()[0];
                 if(cache_object){
                     this.templateDictionary.set('text', cache_object['raw_html']);
@@ -48,11 +46,14 @@ Template.head.onRendered(
 
 Template.head.onDestroyed(
     () => {
-        clearInterval(interval)
+        clearInterval(interval);
     }
 );
 
 Template.head.events({
+    'click #blog-home': (e) => {
+        FlowRouter.go('/blog');
+    },
     'click .fi-minus': (e) => {
         this.templateDictionary.set('text', this.$('.editor-content')[0].innerText);
         let text = '';
@@ -62,8 +63,10 @@ Template.head.events({
             console.log(e);
         }
         let react_text = this.templateDictionary.get('text');
+        let userId = Meteor.userId() || '';
         if(react_text != text && react_text.split('\n').join('') != ''){
             cache_md.insert({  //这个操作 估计得放放服务器端
+                userId: userId,
                 raw_html: react_text,
                 cTime: new Date().getTime()
             });
@@ -71,7 +74,6 @@ Template.head.events({
     },
     'click .fi-bold': (e) => {
         let url = 'https://raw.githubusercontent.com/mybigjsdream/mymarkhtml/master/README.md';
-        //let url = 'http://sina.xiaozufan.com/';
         HTTP.get(url, (e, r) => {
             if(e){
                 console.log(e);

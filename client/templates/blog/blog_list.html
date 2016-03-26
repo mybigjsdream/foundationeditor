@@ -1,22 +1,24 @@
 <template name="blog_list">
     <div class="callout large primary">
         <div class="row column text-center">
-            <h1>挂个图啊</h1>
+            <h1></h1>
         </div>
     </div>
     <div class="row">
         <div class="medium-8 columns" id="blog_list">
-            <div class="blog-post">
-                <h3>Awesome blog post title <small>3/6/2015</small></h3>
-                <img class="thumbnail" src="/blog.png">
-                <p>Praesent id metus massa, ut blandit odio. Proin quis tortor orci. Etiam at risus et justo dignissim congue. Donec congue lacinia dui, a porttitor lectus condimentum laoreet. Nunc eu ullamcorper orci. Quisque eget odio ac lectus vestibulum faucibus eget in metus. In pellentesque faucibus vestibulum. Nulla at nulla justo, eget luctus.</p>
-                <div class="callout">
-                    <ul class="menu simple">
-                        <li><a href="#">Author: Mike Mikers</a></li>
-                        <li><a href="#">Comments: 3</a></li>
-                    </ul>
+            {{#each posts}}
+                <div class="blog-post">
+                    <h3>Awesome blog post title <small>3/6/2015</small></h3>
+                    <img class="thumbnail" src="/blog.png">
+                    <p>Praesent id metus massa, ut blandit odio. Proin quis tortor orci. Etiam at risus et justo dignissim congue. Donec congue lacinia dui, a porttitor lectus condimentum laoreet. Nunc eu ullamcorper orci. Quisque eget odio ac lectus vestibulum faucibus eget in metus. In pellentesque faucibus vestibulum. Nulla at nulla justo, eget luctus.</p>
+                    <div class="callout">
+                        <ul class="menu simple">
+                            <li><a href="#">Author: Mike Mikers</a></li>
+                            <li><a href="#">Comments: 3</a></li>
+                        </ul>
+                    </div>
                 </div>
-            </div>
+            {{/each}}
             <div class="blog-post">
                 <h3>Awesome blog post title <small>3/6/2015</small></h3>
                 <img class="thumbnail" src="/blog.png">
