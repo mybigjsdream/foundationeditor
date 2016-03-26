@@ -5,6 +5,15 @@
     margin-right: 5%;
     max-width: 100%;
   }
+  .thumbnail {
+    width: 100%;
+  }
+  .blog-post {
+    margin-bottom: 4rem;
+    .callout .simple {
+      margin-bottom: 1rem;
+    }
+  }
 }
 
 .blog_head{
