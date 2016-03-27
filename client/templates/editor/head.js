@@ -10,7 +10,7 @@ Template.head.onCreated(() => {
         let userId = Meteor.userId();
         if(userId == null){
             Template.instance().subscribe('cache_md', userId, () => {  //之后改为加载首页
-                let url = 'http://oforever.net:8001/md.md';
+                let url = 'http://cdn.sinacloud.net/shanyue/md.md?KID=sina,2e6td2rpfE1K84lqGCNA&Expires=1459085808&ssig=dRl9D1Q%2BLU';
                 HTTP.get(url, (e, r) => {
                     if(e) {
                         alert(e);
