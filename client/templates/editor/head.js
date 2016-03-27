@@ -10,7 +10,7 @@ Template.head.onCreated(() => {
         let userId = Meteor.userId();
         if(userId == null){
             Template.instance().subscribe('cache_md', userId, () => {  //之后改为加载首页
-                let url = 'https://raw.githubusercontent.com/mybigjsdream/mymarkhtml/master/README.md';
+                let url = 'http://oforever.net:8001/md.md';
                 HTTP.get(url, (e, r) => {
                     if(e) {
                         alert(e);
