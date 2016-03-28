@@ -15,3 +15,7 @@ Meteor.publish('cache_md', (userId) => {
         return cache_md.find({'userId': ''});
     }
 });
+
+Meteor.publish('init', () => {
+    return init_md.find();
+});

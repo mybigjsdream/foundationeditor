@@ -9,18 +9,10 @@ Template.head.onCreated(() => {
         Template.instance().subscribe('publish_article');
         let userId = Meteor.userId();
         if(userId == null){
-            Template.instance().subscribe('cache_md', userId, () => {  //之后改为加载首页
-                let url = 'http://cdn.sinacloud.net/shanyue/md.md?KID=sina,2e6td2rpfE1K84lqGCNA&Expires=1459133280&ssig=qkaKgO1ts6';
-                HTTP.get(url, (e, r) => {
-                    if(e) {
-                        alert(e);
-                    }
-                    if(r.statusCode != 200) {
-                        alert('网络错误'+r.statusCode);
-                    }
-                    this.templateDictionary.set('text', r.content);
-                    this.$('.editor-content').text(r.content);
-                });
+            Template.instance().subscribe('init_md', () => {  //之后改为加载首页
+                let text = init_md.findOne().raw;
+                this.templateDictionary.set('text', text);
+                this.$('.editor-content').text(text);
             });
         }else{
             Template.instance().subscribe('cache_md', userId, () => {
