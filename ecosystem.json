@@ -1,0 +1,23 @@
+{
+  /**
+   * Application configuration section
+   * http://pm2.keymetrics.io/docs/usage/application-declaration/
+   */
+  apps : [
+    {
+      name      : "blog",
+      script    : "main.js",
+      env: {
+        NODE_ENV: "production",
+        MONGO_URL: "mongodb://root:dengjing@oforever.net:27017/meteor",
+        ROOT_URL: "http://oforever.net",
+        PORT: "80"
+      }
+    },
+  ],
+
+  /**
+   * Deployment section
+   * http://pm2.keymetrics.io/docs/usage/deployment/
+   */
+}
