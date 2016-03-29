@@ -5,13 +5,6 @@ var interval;
 
 Template.head.onCreated(() => {
     this.headDictionary = new ReactiveDict();
-    $('html').attr("xmlns:wb","http://open.weibo.com/wb");
-    var elem = document.createElement('script');
-    elem.type = 'text/javascript';
-    elem.src = 'http://tjs.sjs.sinajs.cn/open/api/js/wb.js';
-    //elem.defer = true;
-    var head = document.getElementsByTagName('head')[0];
-    head.appendChild(elem);
     Template.instance().autorun(() => {
         Template.instance().subscribe('publish_article');
         let userId = Meteor.userId();
@@ -147,7 +140,7 @@ Template.head.events({
 
 Template.head.helpers({
     weibo: () => {
-        let share = '<wb:share-button appkey="2953312031" addition="number" type="button"></wb:share-button>';
+        let share = '<wb:share-button appkey="2953312031" addition="simple" type="button"></wb:share-button>';
         return share;
     }
 });
