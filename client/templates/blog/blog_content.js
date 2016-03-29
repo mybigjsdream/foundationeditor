@@ -17,7 +17,6 @@ Template.blog_content.onCreated(() => {
                 this.blogDictionary.set('title', one.title);
                 this.blogDictionary.set('cTime', one.cTime);
                 this.blogDictionary.set('updateTime', one.updateTime);
-                this.blogDictionary.set('userId', one.userId); //考虑屏蔽client获取用户名
             }else{
                 FlowRouter.go('/404');
             }
@@ -39,6 +38,14 @@ Template.blog_content.helpers({
         return new Date(parseInt(this.blogDictionary.get('updateTime'))).toLocaleString();
     },
     blog_user: () => {
-        return this.blogDictionary.get('userId') || '匿名';
+        if(Meteor.userId() == null)
+            return '匿名';
+        let userName = '';
+        let user = Meteor.user();
+        if (user.profile && user.profile.name)  //这一部分  记得重构
+            userName = user.profile.name;
+        else
+            userName = user.emails[0].address;
+        return userName;
     }
 });
