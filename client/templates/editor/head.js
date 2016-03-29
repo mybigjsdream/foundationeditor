@@ -12,7 +12,9 @@ Template.head.onCreated(() => {
             Template.instance().subscribe('init_md', () => {  //之后改为加载首页
                 let text = init_md.findOne().raw;
                 this.templateDictionary.set('text', text);
+                this.headDictionary.set('tmp_entitle', 'WelcomeToUesMeteor-test');
                 this.$('.editor-content').text(text);
+                this.$('#entitle').val('WelcomeToUesMeteor-test');
             });
         }else{
             Template.instance().subscribe('cache_md', userId, () => {
@@ -20,7 +22,9 @@ Template.head.onCreated(() => {
                 let cache_object = cursor.fetch()[0];
                 if(cache_object){
                     this.templateDictionary.set('text', cache_object['raw_html']);
+                    this.headDictionary.set('tmp_entitle', cache_object['entitle']);
                     this.$('.editor-content').text(cache_object['raw_html']);
+                    this.$('#entitle').val(cache_object['entitle']);
                 }
             });
         }
@@ -51,24 +55,31 @@ Template.head.events({
             return;
         }
         let userId = Meteor.userId() || '';
+        let entitle = this.$('#entitle')[0].value;
+        let text = '';
         try {
             text = cache_md.find({'userId': userId}, {sort: {cTime: -1}}).fetch()[0]['raw_html'];
         } catch (e) {
+            console.log('用户首次登录');
             console.log(e);
             cache_md.insert({
                 userId: userId,
+                entitle: entitle,
                 raw_html: text,
                 cTime: new Date().getTime()
             });
             return;
         }
         let react_text = this.templateDictionary.get('text');
-        if(react_text != text && react_text.split('\n').join('') != ''){
+        let react_entitle = this.headDictionary.get('tmp_entitle');
+        if((react_text != text && react_text.split('\n').join('') != '') || entitle != react_entitle){
             cache_md.insert({  //这个操作 估计得放放服务器端
                 userId: userId,
+                entitle: entitle,
                 raw_html: react_text,
                 cTime: new Date().getTime()
             });
+            this.headDictionary.set('tmp_entitle', entitle);  //也可以模仿 react_text 监控input事件
         }
     },
     'click #fi-arrow-left': (e) => {
@@ -82,17 +93,21 @@ Template.head.events({
         if(cache_objects[1]){
             cache_md.remove({_id: cache_objects[0]._id});
             this.$('.editor-content').text(cache_objects[1]['raw_html']);
+            this.$('#entitle').val(cache_objects[1]['entitle']);
             this.templateDictionary.set('text', cache_objects[1]['raw_html']);
+            this.headDictionary.set('tmp_entitle', cache_objects[1]['entitle']);
         }
     },
     'click #fi-monitor': (e) => {
         let userId = Meteor.userId() || '';
         let base_content = this.$('.base-content')[0].children;
-        let url_path = new Date().toLocaleDateString() + '/' + this.$('#entitle')[0].value;
+        let Categories = this.$('#entitle')[0].value.toString().split('-').slice(1);
+        let url_path = new Date().toLocaleDateString() + '/' + this.$('#entitle')[0].value.toString().split('-')[0];
         let id = CryptoJS.MD5(url_path + userId).toString(); //逻辑应该是没登录的不能发表别的匿名用户已经发表过的主题
         var article = {
             id: id,
             userId: userId,
+            Categories: Categories,
             url_path: url_path,
             title: base_content[0].outerHTML,
             text: Array.from(base_content, x => x.outerHTML).splice(1).join('')
