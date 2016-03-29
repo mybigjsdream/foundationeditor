@@ -12,7 +12,7 @@ Template.blog_list.onRendered(
 
 Template.blog_list.helpers({
     posts: () => {
-        let ret_obj = [];
+        var ret_obj = [];
         var get_first_img = (o) => {
             let tmp = [];
             $.parseHTML(o.text).forEach((o) => {
@@ -34,7 +34,7 @@ Template.blog_list.helpers({
             });
             return tmp.join('');
         };
-        publish_article.find().forEach((o) => {
+        publish_article.find({}, {sort: {updateTime: -1}}).forEach((o) => {
             ret_obj.push({
                 'title': $.parseHTML(o.title)[0].innerHTML,  //以后考虑用 html => mkdown 包
                 'updateTime':  new Date(parseInt(o.updateTime)).toLocaleString(),  //.split(' ')[0]
@@ -44,7 +44,6 @@ Template.blog_list.helpers({
                 'userId': o.userId
             });
         });
-        console.log(ret_obj);
         return ret_obj;
     },
 });

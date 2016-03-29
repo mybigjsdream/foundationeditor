@@ -30,7 +30,7 @@ Template.head.onCreated(() => {
 Template.head.onRendered(
     () => {
         var mockClick = () => {
-            this.$('.fi-minus')[0].click();
+            this.$('#fi-time')[0].click();
         };
         interval = setInterval(mockClick, 1000);
     }
@@ -46,16 +46,23 @@ Template.head.events({
     'click #blog-home': (e) => {
         FlowRouter.go('/blog');
     },
-    'click .fi-minus': (e) => {
-        this.templateDictionary.set('text', this.$('.editor-content')[0].innerText);
-        let text = '';
+    'click #fi-time': (e) => {
+        if(Meteor.userId() == null){
+            return;
+        }
+        let userId = Meteor.userId() || '';
         try {
-            text = cache_md.find({}, {sort: {cTime: -1}}).fetch()[0]['raw_html'];
+            text = cache_md.find({'userId': userId}, {sort: {cTime: -1}}).fetch()[0]['raw_html'];
         } catch (e) {
             console.log(e);
+            cache_md.insert({
+                userId: userId,
+                raw_html: text,
+                cTime: new Date().getTime()
+            });
+            return;
         }
         let react_text = this.templateDictionary.get('text');
-        let userId = Meteor.userId() || '';
         if(react_text != text && react_text.split('\n').join('') != ''){
             cache_md.insert({  //这个操作 估计得放放服务器端
                 userId: userId,
@@ -64,18 +71,13 @@ Template.head.events({
             });
         }
     },
-    'click .fi-bold': (e) => {
-        let url = 'https://raw.githubusercontent.com/mybigjsdream/mymarkhtml/master/README.md';
-        HTTP.get(url, (e, r) => {
-            if(e){
-                console.log(e);
-            }
-            let text = r;
-            console.log(text);
-        });
-    },
-    'click .fi-arrow-left': (e) => {
-        let cursor = cache_md.find({}, {sort: {cTime: -1}});
+    'click #fi-arrow-left': (e) => {
+        if(Meteor.userId() == null){
+            alert('需要登陆');
+            return;
+        }
+        let userId = Meteor.userId();
+        let cursor = cache_md.find({'userId': userId}, {sort: {cTime: -1}});
         let cache_objects = cursor.fetch();
         if(cache_objects[1]){
             cache_md.remove({_id: cache_objects[0]._id});
@@ -83,7 +85,7 @@ Template.head.events({
             this.templateDictionary.set('text', cache_objects[1]['raw_html']);
         }
     },
-    'click .fi-monitor': (e) => {
+    'click #fi-monitor': (e) => {
         let userId = Meteor.userId() || '';
         let base_content = this.$('.base-content')[0].children;
         let url_path = new Date().toLocaleDateString() + '/' + this.$('#entitle')[0].value;
@@ -132,6 +134,7 @@ Template.head.events({
                     FlowRouter.go(`/blog/${id}`);
                 }
             }else{
+                alert('英文标题为必填项');
                 this.$('#entitle').css('border-color', 'red');
             }
         });
@@ -140,7 +143,8 @@ Template.head.events({
 
 Template.head.helpers({
     weibo: () => {
-        let share = '<wb:share-button appkey="2953312031" addition="simple" type="button"></wb:share-button>';
+        let share = '<wb:share-button appkey="2953312031" addition="simple" ' +
+                    'type="button" default_text=":)"></wb:share-button>';
         return share;
     }
 });
