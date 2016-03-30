@@ -9,10 +9,9 @@ mobile-experience       # Packages for a great mobile UX
 mongo                   # The database Meteor supports right now
 blaze-html-templates    # Compile .html files into Meteor Blaze views
 session                 # Client-side reactive dictionary for your app
-jquery                  # Helpful client-side library
+#jquery                  # Helpful client-side library  1.3版本 和npm安装方式的版本有冲突
 tracker                 # Meteor's client-side reactive programming library
 
-standard-minifiers      # JS/CSS minifiers run for production mode
 es5-shim                # ECMAScript 5 compatibility for older browsers.
 ecmascript              # Enable ECMAScript2015+ syntax in app code
 
@@ -33,3 +32,5 @@ accounts-password
 accounts-weibo
 accounts-ui
 http
+standard-minifier-css
+standard-minifier-js
