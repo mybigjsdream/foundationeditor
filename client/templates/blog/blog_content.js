@@ -8,7 +8,8 @@ Template.blog_content.onCreated(() => {
     this.blogDictionary = new ReactiveDict();
     Template.instance().autorun(() => {
         let blog_id = FlowRouter.getParam('id');
-        Template.instance().subscribe('publish_article', () => {
+        console.log(blog_id);
+        Template.instance().subscribe('publish_article', blog_id, () => {
             let cursor = publish_article.find({_id: blog_id});
             let one = cursor.fetch()[0];
             if(one){
@@ -17,6 +18,7 @@ Template.blog_content.onCreated(() => {
                 this.blogDictionary.set('title', one.title);
                 this.blogDictionary.set('cTime', one.cTime);
                 this.blogDictionary.set('updateTime', one.updateTime);
+                this.blogDictionary.set('userName', one.userName);
             }else{
                 FlowRouter.go('/404');
             }
@@ -38,14 +40,6 @@ Template.blog_content.helpers({
         return new Date(parseInt(this.blogDictionary.get('updateTime'))).toLocaleString();
     },
     blog_user: () => {
-        if(Meteor.userId() == null)
-            return '匿名';
-        let userName = '';
-        let user = Meteor.user();
-        if (user.profile && user.profile.name)  //这一部分  记得重构
-            userName = user.profile.name;
-        else
-            userName = user.emails[0].address;
-        return userName;
+        return this.blogDictionary.get('userName');
     }
 });

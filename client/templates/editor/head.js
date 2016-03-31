@@ -56,7 +56,7 @@ Template.head.events({
         }
         let userId = Meteor.userId() || '';
         let entitle = this.$('#entitle')[0].value;
-        let text = '';
+        let text = this.templateDictionary.get('text') || '';
         try {
             text = cache_md.find({'userId': userId}, {sort: {cTime: -1}}).fetch()[0]['raw_html'];
         } catch (e) {
@@ -84,7 +84,7 @@ Template.head.events({
     },
     'click #fi-arrow-left': (e) => {
         if(Meteor.userId() == null){
-            alert('需要登陆');
+            alert('此功能需要登陆');
             return;
         }
         let userId = Meteor.userId();
@@ -99,14 +99,23 @@ Template.head.events({
         }
     },
     'click #fi-monitor': (e) => {
-        let userId = Meteor.userId() || '';
+        let user = Meteor.user();
+        let userName = '';
+        if(user == null)
+            userName = '匿名';
+        else{
+            if (user.profile && user.profile.name)  //这一部分  记得重构
+                userName = user.profile.name;
+            else
+                userName = user.emails[0].address;
+        }
         let base_content = this.$('.base-content')[0].children;
         let Categories = this.$('#entitle')[0].value.toString().split('-').slice(1);
         let url_path = new Date().toLocaleDateString() + '/' + this.$('#entitle')[0].value.toString().split('-')[0];
-        let id = CryptoJS.MD5(url_path + userId).toString(); //逻辑应该是没登录的不能发表别的匿名用户已经发表过的主题
+        let id = CryptoJS.MD5(url_path + userName).toString(); //逻辑应该是没登录的不能发表别的匿名用户已经发表过的主题
         var article = {
             id: id,
-            userId: userId,
+            userName: userName,
             Categories: Categories,
             url_path: url_path,
             title: base_content[0].outerHTML,
@@ -126,14 +135,14 @@ Template.head.events({
                         title: article.title,
                         text: article.text,
                         urlPath: article.url_path,
-                        userId: article.userId,
+                        userName: article.userName,
                         cTime: new Date().getTime(),
                         updateTime: new Date().getTime()
                     });
                     FlowRouter.go(`/blog/${id}`);
                 }else{
                     if(!status.is_login){
-                        alert('已有匿名用户发表此主题');
+                        alert('今天已有匿名用户发表此主题');
                         return;
                     }
                     publish_article.update(  //做用户的校验

@@ -35,16 +35,6 @@ Template.blog_list.helpers({
             return tmp.join('');
         };
         publish_article.find({}, {sort: {updateTime: -1}}).forEach((o) => {
-            let user = Meteor.users.findOne({'_id': o.userId});
-            let userName = '';
-            if(user){
-                if (user.profile && user.profile.name)  //这一部分  记得重构
-                    userName = user.profile.name;
-                else
-                    userName = user.emails[0].address;
-            }else{
-                userName = '匿名';
-            }
             ret_obj.push({
                 'title': $.parseHTML(o.title)[0].innerHTML,  //以后考虑用 html => mkdown 包
                 'updateTime':  new Date(parseInt(o.updateTime)).toLocaleString(),  //.split(' ')[0]
@@ -52,7 +42,7 @@ Template.blog_list.helpers({
                 'id': o._id,
                 'text': get_first_text(o),
                 'userId': o.userId,
-                'userName': userName
+                'userName': o.userName
             });
         });
         return ret_obj;
