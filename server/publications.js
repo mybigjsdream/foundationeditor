@@ -10,13 +10,15 @@ Meteor.publish('publish_article', (id) => {
     }
 });
 
-Meteor.publish('cache_md', (userId) => {
+Meteor.publish('cache_md', (userId, tmp) => {
     //let userId = Meteor.userId();
-    //console.log(userId);
+    console.log(userId);
+    console.log(tmp);
     if(userId != null){
-        return cache_md.find({'userId': userId});
+        //return [cache_md.find({'userId': userId}), cache_md.find({'userId': tmp})];
+        return cache_md.find({'$or': [{'userId': userId}, {'userId': tmp}]});
     }else{   // 只是为了易读
-        return cache_md.find({'userId': ''});
+        return cache_md.find({'userId': tmp});
     }
 });
 

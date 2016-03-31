@@ -1,6 +1,7 @@
 /**
  * Created by dengjing on 16/3/7.
  */
+import uuid from 'node-uuid';
 var interval;
 
 Template.head.onCreated(() => {
@@ -13,12 +14,13 @@ Template.head.onCreated(() => {
                 let text = init_md.findOne().raw;
                 this.templateDictionary.set('text', text);
                 this.headDictionary.set('tmp_entitle', 'WelcomeToUesMeteor-test');
-                this.headDictionary.set('uuid', UUID); //匿名用户编辑时的唯一id，页面销毁时消除
+                this.headDictionary.set('uuid', uuid.v4()); //匿名用户编辑时的唯一id，页面销毁时消除
                 this.$('.editor-content').text(text);
                 this.$('#entitle').val('WelcomeToUesMeteor-test');
             });
+            Template.instance().subscribe('cache_md', null, this.headDictionary.get('uuid'));
         }else{
-            Template.instance().subscribe('cache_md', userId, () => {
+            Template.instance().subscribe('cache_md', userId, null, () => {
                 let cursor = cache_md.find({'userId': userId}, {sort: {cTime: -1}});
                 let cache_object = cursor.fetch()[0];
                 if(cache_object){
@@ -38,12 +40,24 @@ Template.head.onRendered(
             this.$('#fi-time')[0].click();
         };
         interval = setInterval(mockClick, 1000);
+        window.addEventListener('beforeunload', (e) => {
+            let c_mds = cache_md.find({'userId': this.headDictionary.get('uuid')});
+            c_mds.forEach((c_md) => {
+                cache_md.remove({'_id': c_md._id});
+            });
+            this.headDictionary.set('uuid', '');
+        });
     }
 );
 
 Template.head.onDestroyed(
     () => {
         clearInterval(interval);
+        let c_mds = cache_md.find({'userId': this.headDictionary.get('uuid')});
+        c_mds.forEach((c_md) => {
+            cache_md.remove({'_id': c_md._id});
+        });
+        this.headDictionary.set('uuid', '');
     }
 );
 
@@ -52,10 +66,10 @@ Template.head.events({
         FlowRouter.go('/blog');
     },
     'click #fi-time': (e) => {
-        if(Meteor.userId() == null){
-            return;
+        let userId = Meteor.userId();
+        if(userId == null){
+            userId = this.headDictionary.get('uuid');
         }
-        let userId = Meteor.userId() || '';
         let entitle = this.$('#entitle')[0].value;
         let text = this.templateDictionary.get('text') || '';
         try {
@@ -69,7 +83,6 @@ Template.head.events({
                 raw_html: text,
                 cTime: new Date().getTime()
             });
-            return;
         }
         let react_text = this.templateDictionary.get('text');
         let react_entitle = this.headDictionary.get('tmp_entitle');
@@ -84,12 +97,18 @@ Template.head.events({
         }
     },
     'click #fi-arrow-left': (e) => {
-        if(Meteor.userId() == null){
-            alert('此功能需要登陆');
+        let userId = Meteor.userId();
+        if(userId == null){
+            userId = this.headDictionary.get('uuid');
+        }
+        let cursor;
+        try {
+            cursor = cache_md.find({'userId': userId}, {sort: {cTime: -1}});
+        } catch (e) {
+            alert('还没有缓存');
+            console.log(e);
             return;
         }
-        let userId = Meteor.userId();
-        let cursor = cache_md.find({'userId': userId}, {sort: {cTime: -1}});
         let cache_objects = cursor.fetch();
         if(cache_objects[1]){
             cache_md.remove({_id: cache_objects[0]._id});
