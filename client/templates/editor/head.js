@@ -13,6 +13,7 @@ Template.head.onCreated(() => {
                 let text = init_md.findOne().raw;
                 this.templateDictionary.set('text', text);
                 this.headDictionary.set('tmp_entitle', 'WelcomeToUesMeteor-test');
+                this.headDictionary.set('uuid', UUID); //匿名用户编辑时的唯一id，页面销毁时消除
                 this.$('.editor-content').text(text);
                 this.$('#entitle').val('WelcomeToUesMeteor-test');
             });
