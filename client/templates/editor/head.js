@@ -18,9 +18,9 @@ Template.head.onCreated(() => {
                 this.$('.editor-content').text(text);
                 this.$('#entitle').val('WelcomeToUesMeteor-test');
             });
-            Template.instance().subscribe('cache_md', null, this.headDictionary.get('uuid'));
+            Template.instance().subscribe('cache_md', this.headDictionary.get('uuid'));
         }else{
-            Template.instance().subscribe('cache_md', userId, null, () => {
+            Template.instance().subscribe('cache_md', userId, () => {
                 let cursor = cache_md.find({'userId': userId}, {sort: {cTime: -1}});
                 let cache_object = cursor.fetch()[0];
                 if(cache_object){
