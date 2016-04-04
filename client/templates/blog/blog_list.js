@@ -2,6 +2,8 @@
  * Created by dengjing on 16/3/26.
  */
 
+var page_size = 3;
+
 Template.blog_list.onRendered(
     () => {
         Template.instance().autorun(() => {
@@ -34,7 +36,7 @@ Template.blog_list.helpers({
             });
             return tmp.join('');
         };
-        publish_article.find({}, {sort: {updateTime: -1}}).forEach((o) => {
+        publish_article.find({}, {sort: {updateTime: -1}, limit: page_size}).forEach((o) => {
             ret_obj.push({
                 'title': $.parseHTML(o.title)[0].innerHTML,  //以后考虑用 html => mkdown 包
                 'updateTime':  new Date(parseInt(o.updateTime)).toLocaleString(),  //.split(' ')[0]
