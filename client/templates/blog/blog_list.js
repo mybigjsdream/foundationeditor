@@ -2,10 +2,11 @@
  * Created by dengjing on 16/3/26.
  */
 
-var page_size = 3;
+page_size = 3;
 
 Template.blog_list.onRendered(
     () => {
+        //console.log(FlowRouter.getParam('page'));
         Template.instance().autorun(() => {
             Template.instance().subscribe('publish_article');
         });
@@ -36,7 +37,10 @@ Template.blog_list.helpers({
             });
             return tmp.join('');
         };
-        publish_article.find({}, {sort: {updateTime: -1}, limit: page_size}).forEach((o) => {
+        let base_skip = parseInt(FlowRouter.getQueryParam('page') || "1");
+        let page_skip = page_size * (base_skip - 1);
+        //console.log(page_skip);
+        publish_article.find({}, {sort: {updateTime: -1}, limit: page_size, skip: page_skip}).forEach((o) => {
             ret_obj.push({
                 'title': $.parseHTML(o.title)[0].innerHTML,  //以后考虑用 html => mkdown 包
                 'updateTime':  new Date(parseInt(o.updateTime)).toLocaleString(),  //.split(' ')[0]
