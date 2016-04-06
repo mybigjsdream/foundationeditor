@@ -18,6 +18,10 @@ Template.blog_page.events({
             a_text = 1;
         if(a_text == '尾页')
             a_text = Math.ceil(publish_article.find().count()/page_size);
+        if(a_text == '上一页')
+            a_text = parseInt(FlowRouter.getQueryParam('page') || "1") - 1;
+        if(a_text == '下一页')
+            a_text = parseInt(FlowRouter.getQueryParam('page') || "1") + 1;
         a_text = parseInt(a_text);
         console.log(a_text);
         FlowRouter.go(`/blog?page=${a_text}`);
@@ -68,8 +72,18 @@ Template.blog_page.helpers({
             last_li_a = false;
         }
         if(current_page <= 3) {
-            for(let i = 0; i < 9; i++) {
+            for(let i = 0; i < 11; i++) {
                 if (i == 0) {
+                    ret_pages.push({
+                        'li_class': first_li_class,
+                        'is_ellipsis': true,
+                        'span_class': 'dis',
+                        'is_a': first_li_a,
+                        'value': '上一页'
+                    });
+                    continue;
+                }
+                if (i == 1) {
                     ret_pages.push({
                         'li_class': first_li_class,
                         'is_ellipsis': true,
@@ -79,7 +93,7 @@ Template.blog_page.helpers({
                     });
                     continue;
                 }
-                if (i == current_page) {
+                if (i - 1 == current_page) {
                     ret_pages.push({
                         'li_class': 'current',
                         'is_ellipsis': true,
@@ -89,27 +103,27 @@ Template.blog_page.helpers({
                     });
                     continue;
                 }
-                if (i <= 3 && i != 0) {
+                if (i <= 4 && i >= 2) {
                     ret_pages.push({
                         'li_class': 'normal',
                         'is_ellipsis': true,
                         'span_class': 'dis',
                         'is_a': true,
-                        'value': i
+                        'value': i - 1
                     });
                     continue;
                 }
-                if (i > 4 && i < 8) {
+                if (i > 5 && i < 9) {
                     ret_pages.push({
                         'li_class': 'normal',
                         'is_ellipsis': true,
                         'span_class': 'dis',
                         'is_a': true,
-                        'value': total_page - (7 - i)
+                        'value': total_page - (8 - i)
                     });
                     continue;
                 }
-                if (i == 4) {
+                if (i == 5) {
                     ret_pages.push({
                         'li_class': 'ellipsis',
                         'is_ellipsis': false,
@@ -119,7 +133,7 @@ Template.blog_page.helpers({
                     });
                     continue;
                 }
-                if (i == 8) {
+                if (i == 9) {
                     ret_pages.push({
                         'li_class': last_li_class,
                         'is_ellipsis': true,
@@ -129,12 +143,32 @@ Template.blog_page.helpers({
                     });
                     continue;
                 }
+                if (i == 10) {
+                    ret_pages.push({
+                        'li_class': last_li_class,
+                        'is_ellipsis': true,
+                        'span_class': 'dis',
+                        'is_a': last_li_a,
+                        'value': '下一页'
+                    });
+                    continue;
+                }
             }
             return ret_pages;
         }
         if(total_page - current_page <= 5) {
-            for(let i = 0; i < 9; i++) {
+            for(let i = 0; i < 11; i++) {
                 if (i == 0) {
+                    ret_pages.push({
+                        'li_class': first_li_class,
+                        'is_ellipsis': true,
+                        'span_class': 'dis',
+                        'is_a': first_li_a,
+                        'value': '上一页'
+                    });
+                    continue;
+                }
+                if (i == 1) {
                     ret_pages.push({
                         'li_class': first_li_class,
                         'is_ellipsis': true,
@@ -144,14 +178,14 @@ Template.blog_page.helpers({
                     });
                     continue;
                 }
-                if (i == 1) {
+                if (i == 2) {
                     ret_pages.push({
                         'li_class': 'ellipsis',
                         'is_ellipsis': false,
                     });
                     continue;
                 }
-                if (i == 8) {
+                if (i == 9) {
                     ret_pages.push({
                         'li_class': last_li_class,
                         'is_ellipsis': true,
@@ -161,7 +195,17 @@ Template.blog_page.helpers({
                     });
                     continue;
                 }
-                if ((total_page - (7 - i)) == current_page) {
+                if (i == 10) {
+                    ret_pages.push({
+                        'li_class': last_li_class,
+                        'is_ellipsis': true,
+                        'span_class': 'dis',
+                        'is_a': last_li_a,
+                        'value': '下一页'
+                    });
+                    continue;
+                }
+                if ((total_page - (8 - i)) == current_page) {
                     ret_pages.push({
                         'li_class': 'current',
                         'is_ellipsis': true,
@@ -176,7 +220,7 @@ Template.blog_page.helpers({
                         'is_ellipsis': true,
                         'span_class': 'dis',
                         'is_a': true,
-                        'value': total_page - (7 - i)
+                        'value': total_page - (8 - i)
                     });
                     continue;
                 }
@@ -184,8 +228,18 @@ Template.blog_page.helpers({
             return ret_pages;
         }
         if(current_page > 3 && total_page - current_page > 5) {
-            for(let i = 0; i < 9; i++) {
+            for(let i = 0; i < 11; i++) {
                 if (i == 0) {
+                    ret_pages.push({
+                        'li_class': first_li_class,
+                        'is_ellipsis': true,
+                        'span_class': 'dis',
+                        'is_a': first_li_a,
+                        'value': '上一页'
+                    });
+                    continue;
+                }
+                if (i == 1) {
                     ret_pages.push({
                         'li_class': first_li_class,
                         'is_ellipsis': true,
@@ -195,7 +249,7 @@ Template.blog_page.helpers({
                     });
                     continue;
                 }
-                if (i == 1) {
+                if (i == 2) {
                     ret_pages.push({
                         'li_class': 'normal',
                         'is_ellipsis': true,
@@ -205,7 +259,7 @@ Template.blog_page.helpers({
                     });
                     continue;
                 }
-                if (i == 2) {
+                if (i == 3) {
                     ret_pages.push({
                         'li_class': 'current',
                         'is_ellipsis': true,
@@ -215,7 +269,7 @@ Template.blog_page.helpers({
                     });
                     continue;
                 }
-                if (i == 3) {
+                if (i == 4) {
                     ret_pages.push({
                         'li_class': 'normal',
                         'is_ellipsis': true,
@@ -225,30 +279,40 @@ Template.blog_page.helpers({
                     });
                     continue;
                 }
-                if (i > 4 && i < 8) {
+                if (i > 5 && i < 9) {
                     ret_pages.push({
                         'li_class': 'normal',
                         'is_ellipsis': true,
                         'span_class': 'dis',
                         'is_a': true,
-                        'value': total_page - (7 - i)
+                        'value': total_page - (8 - i)
                     });
                     continue;
                 }
-                if (i == 4) {
+                if (i == 5) {
                     ret_pages.push({
                         'li_class': 'ellipsis',
                         'is_ellipsis': false,
                     });
                     continue;
                 }
-                if (i == 8) {
+                if (i == 9) {
                     ret_pages.push({
                         'li_class': last_li_class,
                         'is_ellipsis': true,
                         'span_class': 'dis',
                         'is_a': last_li_a,
                         'value': '尾页'
+                    });
+                    continue;
+                }
+                if (i == 10) {
+                    ret_pages.push({
+                        'li_class': last_li_class,
+                        'is_ellipsis': true,
+                        'span_class': 'dis',
+                        'is_a': last_li_a,
+                        'value': '下一页'
                     });
                     continue;
                 }
