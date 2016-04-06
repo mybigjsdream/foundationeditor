@@ -46,6 +46,7 @@ Template.blog_list.helpers({
                 'updateTime':  new Date(parseInt(o.updateTime)).toLocaleString(),  //.split(' ')[0]
                 'firstImg': get_first_img(o),
                 'id': o._id,
+                'path': o.urlPath,
                 'text': get_first_text(o),
                 'userId': o.userId,
                 'userName': o.userName

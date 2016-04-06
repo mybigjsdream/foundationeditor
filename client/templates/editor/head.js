@@ -149,7 +149,8 @@ Template.head.events({
             }
             console.log(status);
             if(status.url_test){
-                let one = publish_article.findOne({_id: article.id});
+                let one = publish_article.findOne({urlPath: article.url_path});
+                //此处有个故意bug，登录用户可以修改当天任意用户发布同名帖子(也就是当天同名帖子只能发一份)
                 if(!one){
                     publish_article.insert({
                         _id: article.id,
@@ -161,7 +162,7 @@ Template.head.events({
                         cTime: current_time.getTime(),
                         updateTime: current_time.getTime()
                     });
-                    FlowRouter.go(`/blog/${id}`);
+                    FlowRouter.go(`/blog/${article.url_path}`);
                 }else{
                     if(!status.is_login){
                         alert('今天已有匿名用户发表此主题');
@@ -177,11 +178,12 @@ Template.head.events({
                                 text: article.text,
                                 urlPath: article.url_path,
                                 Categories: article.Categories,
+                                userName: article.userName,
                                 updateTime: current_time.getTime()
                             }
                         }
                     );
-                    FlowRouter.go(`/blog/${id}`);
+                    FlowRouter.go(`/blog/${article.url_path}`);
                 }
             }else{
                 alert('英文标题为必填项');

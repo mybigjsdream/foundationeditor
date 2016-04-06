@@ -7,10 +7,11 @@
 Template.blog_content.onCreated(() => {
     this.blogDictionary = new ReactiveDict();
     Template.instance().autorun(() => {
-        let blog_id = FlowRouter.getParam('id');
-        console.log(blog_id);
-        Template.instance().subscribe('publish_article', blog_id, () => {
-            let cursor = publish_article.find({_id: blog_id});
+        let path = FlowRouter.getParam('year')+'/'+FlowRouter.getParam('month')+
+                    '/'+FlowRouter.getParam('day')+'/'+FlowRouter.getParam('title');
+        console.log(path);
+        Template.instance().subscribe('publish_article', () => {
+            let cursor = publish_article.find({urlPath: path});
             let one = cursor.fetch()[0];
             if(one){
                 //blog_content = one.text;
