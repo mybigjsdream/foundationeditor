@@ -1,6 +1,8 @@
 /**
  * Created by dengjing on 16/3/26.
  */
+import moment from 'moment';
+moment.locale('zh-cn');
 
 page_size = 3;
 
@@ -39,11 +41,11 @@ Template.blog_list.helpers({
         };
         let base_skip = parseInt(FlowRouter.getQueryParam('page') || "1");
         let page_skip = page_size * (base_skip - 1);
-        //console.log(page_skip);
         publish_article.find({}, {sort: {updateTime: -1}, limit: page_size, skip: page_skip}).forEach((o) => {
             ret_obj.push({
                 'title': $.parseHTML(o.title)[0].innerHTML,  //以后考虑用 html => mkdown 包
-                'updateTime':  new Date(parseInt(o.updateTime)).toLocaleString(),  //.split(' ')[0]
+                //'updateTime':  new Date(parseInt(o.updateTime)).toLocaleString(), //.substr(0, 9),
+                'updateTime':  moment(new Date(parseInt(o.updateTime))).fromNow(),
                 'firstImg': get_first_img(o),
                 'id': o._id,
                 'path': o.urlPath,

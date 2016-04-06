@@ -6,6 +6,7 @@
   "dependencies": {
     "jquery": "^2.2.2",
     "meteor-node-stubs": "^0.2.1",
+    "moment": "^2.11.2",
     "node-uuid": "^1.4.7"
   },
   "devDependencies": {},
