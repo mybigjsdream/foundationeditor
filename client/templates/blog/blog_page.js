@@ -49,7 +49,7 @@ Template.blog_page.helpers({
     page_count_mildle_normal: () => {
         let articles_count = publish_article.find().count();
         let page = Math.ceil(articles_count/page_size);
-        return page > 7;
+        return page > 10;
     },
     page_show_mildle_normal: () => {   //至少为十页
         let ret_pages = [];
@@ -132,69 +132,6 @@ Template.blog_page.helpers({
             }
             return ret_pages;
         }
-        /*
-        if(total_page - current_page <= 2) {
-            for(let i = 0; i < 9; i++) {
-                if (i == 0) {
-                    ret_pages.push({
-                        'li_class': first_li_class,
-                        'is_ellipsis': false,
-                        'span_class': 'dis',
-                        'is_a': first_li_a,
-                        'value': '首页'
-                    });
-                    continue;
-                }
-                if (i == current_page) {
-                    ret_pages.push({
-                        'li_class': 'current',
-                        'is_ellipsis': false,
-                        'span_class': 'show-for-sr',
-                        'is_a': false,
-                        'value': i-1
-                    });
-                    continue;
-                }
-                if (i <= 3 && i != 0) {
-                    ret_pages.push({
-                        'li_class': 'normal',
-                        'is_ellipsis': false,
-                        'span_class': 'dis',
-                        'is_a': true,
-                        'value': i
-                    });
-                    continue;
-                }
-                if (i > 4 && i < 8) {
-                    ret_pages.push({
-                        'li_class': 'normal',
-                        'is_ellipsis': false,
-                        'span_class': 'dis',
-                        'is_a': true,
-                        'value': i - 1
-                    });
-                    continue;
-                }
-                if (i == 4) {
-                    ret_pages.push({
-                        'li_class': 'ellipsis',
-                        'is_ellipsis': true,
-                    });
-                    continue;
-                }
-                if (i == 8) {
-                    ret_pages.push({
-                        'li_class': last_li_class,
-                        'is_ellipsis': false,
-                        'span_class': 'dis',
-                        'is_a': last_li_a,
-                        'value': '尾页'
-                    });
-                    continue;
-                }
-            }
-            return ret_pages;
-        }*/
         if(total_page - current_page <= 5) {
             for(let i = 0; i < 9; i++) {
                 if (i == 0) {
