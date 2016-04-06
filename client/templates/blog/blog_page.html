@@ -1,18 +1,72 @@
 <template name="blog_page">
     {{#if page_count_small}}
-        hh
-    {{/if}}
-    {{#if page_count_mildle_3}}
         <ul class="pagination" role="navigation" aria-label="Pagination">
             <li class="disabled">Previous</li>
             <li class="current"><span class="show-for-sr">You're on page</span> 1</li>
-            <li><a href="#" aria-label="Page 2">2</a></li>
-            <li><a href="#" aria-label="Page 3">3</a></li>
-            <li><a href="#" aria-label="Page 4">4</a></li>
+            <li><a aria-label="Page 2">2</a></li>
+            <li><a aria-label="Page 3">3</a></li>
+            <li><a aria-label="Page 4">4</a></li>
             <li class="ellipsis"></li>
-            <li><a href="#" aria-label="Page 12">12</a></li>
-            <li><a href="#" aria-label="Page 13">13</a></li>
-            <li><a href="#" aria-label="Next page">Next</a></li>
+            <li><a aria-label="Page 12">12</a></li>
+            <li><a aria-label="Page 13">13</a></li>
+            <li><a aria-label="Next page">Next</a></li>
+        </ul>
+    {{/if}}
+    {{#if page_count_mildle_1}}
+        <ul class="pagination" role="navigation" aria-label="Pagination">
+            <li class="disabled"><span class="dis">You're on page</span>首页</li>
+            <li class="current"><span class="show-for-sr">You're on page</span>1</li>
+            <!--<li class={{page_class}}><a aria-label="Page 2">2</a></li>-->
+            <li><a aria-label="Page 3">3</a></li>
+            <li><a aria-label="Page 4">4</a></li>
+            <li class="ellipsis"></li>
+            <li><a aria-label="Page 12">12</a></li>
+            <li><a aria-label="Page 13">13</a></li>
+            <li class="normal"><a aria-label="Next page">尾页</a></li>
+        </ul>
+    {{/if}}
+    {{#if page_count_mildle_2}}
+        <ul class="pagination" role="navigation" aria-label="Pagination">
+            <li class="disabled"><span class="dis">You're on page</span>首页</li>
+            <li class="current"><span class="show-for-sr">You're on page</span>1</li>
+            <li class="normal"><span class="dis">You're on page</span><a>2</a></li>
+            <li class="normal"><span class="dis">You're on page</span><a>3</a></li>
+            <li class="normal"><span class="dis">You're on page</span><a>4</a></li>
+            <li class="ellipsis"></li>
+            <li class="normal"><span class="dis">You're on page</span><a>12</a></li>
+            <li class="normal"><span class="dis">You're on page</span><a>13</a></li>
+            <li class="normal"><span class="dis">You're on page</span><a>尾页</a></li>
+        </ul>
+    {{/if}}
+    {{#if page_count_mildle_3}}
+        <ul class="pagination" role="navigation" aria-label="Pagination">
+            <li class="disabled"><span class="dis">You're on page</span>首页</li>
+            <li class="current"><span class="show-for-sr">You're on page</span>1</li>
+            <li class="normal"><span class="dis">You're on page</span><a>2</a></li>
+            <li class="normal"><span class="dis">You're on page</span><a>3</a></li>
+            <li class="ellipsis"></li>
+            <li class="normal"><span class="dis">You're on page</span><a>11</a></li>
+            <li class="normal"><span class="dis">You're on page</span><a>12</a></li>
+            <li class="normal"><span class="dis">You're on page</span><a>13</a></li>
+            <li class="normal"><span class="dis">You're on page</span><a>尾页</a></li>
+        </ul>
+    {{/if}}
+    {{#if page_count_mildle_normal}}
+        <ul class="pagination" role="navigation" aria-label="Pagination">
+            {{#each page in page_show_mildle_normal}}
+                <li class={{page.li_class}}>
+                    {{#if page.is_ellipsis}}
+                        <span class={{page.span_class}}>
+                            You're on page
+                        </span>
+                        {{#if page.is_a}}
+                            <a class="page-click">{{page.value}}</a>
+                        {{else}}
+                            {{page.value}}
+                        {{/if}}
+                    {{/if}}
+                </li>
+            {{/each}}
         </ul>
     {{/if}}
 </template>

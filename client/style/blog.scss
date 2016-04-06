@@ -14,6 +14,15 @@
       margin-bottom: 1rem;
     }
   }
+  // 页码的样式
+  .pagination {
+    .dis_a {
+      display: none;
+    }
+    .dis {
+      display: none;
+    }
+  }
 }
 
 .blog_head{
@@ -44,6 +53,8 @@
     float: right;
   }
 }
+
+
 
 .bfooter {
   padding-top: 1rem;
