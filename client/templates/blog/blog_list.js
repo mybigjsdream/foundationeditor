@@ -1,7 +1,7 @@
 /**
  * Created by dengjing on 16/3/26.
  */
-import moment from 'moment';
+//import moment from 'moment';
 moment.locale('zh-cn');
 
 page_size = 3;

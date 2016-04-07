@@ -34,3 +34,4 @@ accounts-ui
 http
 standard-minifier-css
 standard-minifier-js
+momentjs:moment
