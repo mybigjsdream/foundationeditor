@@ -168,6 +168,10 @@ Template.head.events({
                         alert('今天已有匿名用户发表此主题');
                         return;
                     }
+                    if(one.userName != userName){
+                        alert('今天已有其他用户发布此主题了');
+                        return;
+                    }
                     article.url_path =  /\d+\/\d+\/\d+/.exec(one.urlPath)[0] + '/' +
                                         /\d+\/\d+\/\d+\/(\w+)/.exec(article.url_path)[1];
                     publish_article.update(  //做用户的校验
