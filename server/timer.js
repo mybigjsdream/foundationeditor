@@ -17,7 +17,7 @@ if(publish_article.find().count() != 0) {
         ones.forEach((one) => {
             one.Categories.forEach((o) => {
                 article_category_view.insert({
-                    _id: o+one._id,
+                    _id: one._id+o,
                     id: one._id,
                     category: o
                 });

@@ -10,8 +10,9 @@ Template.blog_list.onRendered(
     () => {
         //console.log(FlowRouter.getParam('page'));
         Template.instance().autorun(() => {
-            //let
-            Template.instance().subscribe('publish_article');
+            let category = FlowRouter.getParam('category');
+            let author = FlowRouter.getParam('author');
+            Template.instance().subscribe('publish_article', null, category, author);
         });
     }
 );

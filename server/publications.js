@@ -1,12 +1,15 @@
 /**
  * Created by dengjing on 16/3/8.
  */
-Meteor.publish('publish_article', (id) => {
+Meteor.publish('publish_article', (id, category, userName) => {
     //check(id, String);
-    if(id == null)
+    if(id == null && category == null && userName == null)
         return publish_article.find();
-    else{
+    if(id) {
         return publish_article.find({'_id': id});
+    }
+    if(userName) {
+        return publish_article.find({'userName': userName});
     }
 });
 
