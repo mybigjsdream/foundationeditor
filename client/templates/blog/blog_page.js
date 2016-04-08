@@ -5,14 +5,15 @@
 Template.blog_page.onCreated(
     () => {
         //console.log(FlowRouter.getParam('page'));
-        Template.instance().autorun(() => {
-            Template.instance().subscribe('publish_article');
-        });
+        //Template.instance().autorun(() => {
+        //    Template.instance().subscribe('publish_article');
+        //});
     }
 );
 
 Template.blog_page.events({
     'click .page-click': (e) => {
+        let current_path = FlowRouter.current().path.split('?')[0];
         let a_text = $(e.target)[0].innerHTML;
         if(a_text == '首页')
             a_text = 1;
@@ -23,8 +24,7 @@ Template.blog_page.events({
         if(a_text == '下一页')
             a_text = parseInt(FlowRouter.getQueryParam('page') || "1") + 1;
         a_text = parseInt(a_text);
-        console.log(a_text);
-        FlowRouter.go(`/blog?page=${a_text}`);
+        FlowRouter.go(`${current_path}?page=${a_text}`);
     }
 });
 
