@@ -27,3 +27,11 @@ Meteor.publish('cache_md', (userId, tmp) => {
 Meteor.publish('init_md', () => {
     return init_md.find();
 });
+
+Meteor.publish('article_author_view', () => {
+    return article_author_view.find();
+});
+
+Meteor.publish('article_category_view', () => {
+    return article_category_view.find();
+});
