@@ -22,18 +22,7 @@
         </div>
         <div class="medium-3 columns" data-sticky-container>
             <div class="sticky" data-sticky data-anchor="blog_list">
-                <h4>类别</h4>
-                <ul>
-                    {{#each category in categories}}
-                        <li><a href="/category/{{category.name}}">{{category.name}}</a></li>
-                    {{/each}}
-                </ul>
-                <h4>作者</h4>
-                <ul>
-                    {{#each author in authors}}
-                        <li><a href="/author/{{author.name}}">{{author.name}}</a></li>
-                    {{/each}}
-                </ul>
+                {{> blog_sticky_list}}
             </div>
         </div>
     </div>

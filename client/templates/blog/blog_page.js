@@ -4,10 +4,6 @@
 
 Template.blog_page.onCreated(
     () => {
-        //console.log(FlowRouter.getParam('page'));
-        //Template.instance().autorun(() => {
-        //    Template.instance().subscribe('publish_article');
-        //});
     }
 );
 
