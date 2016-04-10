@@ -4,6 +4,20 @@
 
 //var blog_content = '';
 
+Template.blog_content.onRendered(() => {
+    var link = document.createElement('link');
+    link.type = 'image/x-icon';
+    link.rel = 'icon';
+    link.href = '/favicon.ico';
+    var elem = document.createElement('script');
+    elem.type = 'text/javascript';
+    elem.src = 'http://tjs.sjs.sinajs.cn/open/api/js/wb.js';
+    document.getElementsByTagName('head')[0].appendChild(link);
+    document.getElementsByTagName('head')[0].appendChild(elem);
+    $('html').attr("xmlns:wb","http://open.weibo.com/wb");
+});
+
+
 Template.blog_content.onCreated(() => {
     this.blogDictionary = new ReactiveDict();
     Template.instance().autorun(() => {
@@ -42,5 +56,10 @@ Template.blog_content.helpers({
     },
     blog_user: () => {
         return this.blogDictionary.get('userName');
+    },
+    weibo: () => {
+        let share = '<wb:share-button appkey="2953312031" addition="simple" ' +
+                    'type="button" default_text=":)"></wb:share-button>';
+        return share;
     }
 });
