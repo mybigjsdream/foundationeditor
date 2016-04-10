@@ -3,5 +3,8 @@
  */
 
 Template.blog_layout.onRendered(() => {
-    $(document).foundation();
+    var loadfounfation = () => {
+        $(document).foundation();
+    };
+    interval = setInterval(loadfounfation, 1000);
 });

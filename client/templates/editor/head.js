@@ -197,10 +197,10 @@ Template.head.events({
     }
 });
 
-Template.head.helpers({
-    weibo: () => {
-        let share = '<wb:share-button appkey="2953312031" addition="simple" ' +
-                    'type="button" default_text=":)"></wb:share-button>';
-        return share;
-    }
-});
+//Template.head.helpers({
+//    weibo: () => {
+//        let share = '<wb:share-button appkey="2953312031" addition="simple" ' +
+//                    'type="button" default_text=":)"></wb:share-button>';
+//        return share;
+//    }
+//});
