@@ -11,6 +11,14 @@ Meteor.publish('publish_article', (id, category, userName) => {
     if(userName) {
         return publish_article.find({'userName': userName});
     }
+    if(category) {
+        let category_ids = article_category_view.find({'category': category});
+        let ids = [];
+        category_ids.forEach((o) => {
+            ids.push(o.id);
+        });
+        return publish_article.find({'_id': {$in: ids}});
+    }
 });
 
 Meteor.publish('cache_md', (userId, tmp) => {
