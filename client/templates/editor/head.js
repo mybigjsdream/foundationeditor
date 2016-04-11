@@ -127,7 +127,7 @@ Template.head.events({
         var current_time = new Date();
         let base_content = this.$('.base-content')[0].children;
         let Categories = this.$('#entitle')[0].value.toString().split('-').slice(1);
-        let url_path = current_time.toLocaleDateString() + '/' + this.$('#entitle')[0].value.toString().split('-')[0];
+        let url_path = moment().format('YYYY/MM/DD') + '/' + this.$('#entitle')[0].value.toString().split('-')[0];
         let id = CryptoJS.MD5(url_path + Meteor.userId()).toString(); //逻辑应该是没登录的不能发表别的匿名用户已经发表过的主题
         var article = {
             id: id,
@@ -142,7 +142,6 @@ Template.head.events({
                 throwError(error.reason);
                 FlowRouter.go('/404');
             }
-            console.log(status);
             if(status.url_test){
                 let one = publish_article.findOne({urlPath: article.url_path});
                 //此处有个故意bug，登录用户可以修改当天任意用户发布同名帖子(也就是当天同名帖子只能发一份)
