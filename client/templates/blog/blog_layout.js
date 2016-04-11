@@ -6,6 +6,6 @@ Template.blog_layout.onRendered(() => {
     //var loadfounfation = () => {
     //    $(document).foundation();
     //};
-    //interval = setInterval(loadfounfation, 5000);
+    //interval = setInterval(loadfounfation, 1000);
     //$(document).foundation();
 });

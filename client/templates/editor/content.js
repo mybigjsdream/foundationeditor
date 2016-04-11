@@ -27,8 +27,6 @@ var getCurrentLine = (currentRange) => {
 
 
 var scrollPre = (e) => {
-    //var $textarea = $(e.target).find('[name=textarea]');
-    //this.templateDictionary.set('text', $textarea.context.innerText);
     this.templateDictionary.set('text', this.$('.editor-content')[0].innerText);
     var line = getCurrentLine(window.getSelection().getRangeAt(0));
     var count = 0;

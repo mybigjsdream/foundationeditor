@@ -8,7 +8,6 @@ page_size = 3;
 
 Template.blog_list.onRendered(
     () => {
-        //console.log(FlowRouter.getParam('page'));
         Template.instance().autorun(() => {
             let category = FlowRouter.getParam('category');
             let author = FlowRouter.getParam('author');

@@ -1,12 +1,11 @@
 /**
  * Created by dengjing on 16/4/8.
  */
-
 Template.blog_sticky_list.onRendered(
     () => {
-        //console.log(FlowRouter.getParam('page'));
+        $(document).foundation();
+        //setTimesetTimeout(() => {$('.sticky').foundation();},1000);
         Template.instance().autorun(() => {
-            $(document).foundation();
             Template.instance().subscribe('article_author_view');
             Template.instance().subscribe('article_category_view');
         });
@@ -29,7 +28,6 @@ Template.blog_sticky_list.helpers({
             ret_name.push({name: key, value: ret_authors[key]});
         }
         ret_name.sort((a, b) => {return (a.value < b.value) ? 1 : ((b.value < a.value) ? -1 : 0);});
-        console.log(ret_name);
         return ret_name.splice(0, 4);
     },
     authors: () => {
@@ -47,7 +45,6 @@ Template.blog_sticky_list.helpers({
             ret_name.push({name: key, value: ret_authors[key]});
         }
         ret_name.sort((a, b) => {return (a.value < b.value) ? 1 : ((b.value < a.value) ? -1 : 0);});
-        console.log(ret_name);
         return ret_name.splice(0, 4);
     },
 });
