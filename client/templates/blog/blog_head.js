@@ -7,7 +7,7 @@ Template.blog_head.events({
         FlowRouter.go('/blog');
     },
     'click #blog-editor': (e) => {
-        FlowRouter.go('/');
+        FlowRouter.go('/editor');
     },
     'click #blog-about': (e) => {
         FlowRouter.go('/404');
