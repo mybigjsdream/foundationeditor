@@ -26,7 +26,6 @@ shanyue:meteor-highlight
 shanyue:marked
 check
 jparker:crypto-md5
-shanyue:foundation-sites
 msavin:mongol
 accounts-password
 accounts-weibo
@@ -35,3 +34,4 @@ http
 standard-minifier-css
 standard-minifier-js
 momentjs:moment
+shanyue:foundation-sites

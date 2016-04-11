@@ -6,6 +6,7 @@ Template.blog_sticky_list.onRendered(
     () => {
         //console.log(FlowRouter.getParam('page'));
         Template.instance().autorun(() => {
+            $(document).foundation();
             Template.instance().subscribe('article_author_view');
             Template.instance().subscribe('article_category_view');
         });
