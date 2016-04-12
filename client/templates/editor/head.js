@@ -4,6 +4,12 @@
 import uuid from 'node-uuid';
 var interval;
 
+Template.head.onCreated(
+    () => {
+
+    }
+);
+
 Template.head.onRendered(
     () => {
         this.headDictionary = new ReactiveDict();
@@ -22,7 +28,8 @@ Template.head.onRendered(
         }else{
             Template.instance().subscribe('cache_md', userId, this.headDictionary.get('uuid'), () => {
                 let cursor = cache_md.find({'userId': userId}, {sort: {cTime: -1}});
-                let cache_object = cursor.fetch()[0];
+                let cache_objects = cursor.fetch();
+                let cache_object = cache_objects[0];
                 if(cache_object){
                     this.templateDictionary.set('text', cache_object['raw_html']);
                     this.headDictionary.set('tmp_entitle', cache_object['entitle']);
@@ -68,7 +75,8 @@ Template.head.events({
         let entitle = this.$('#entitle')[0].value;
         let text = this.templateDictionary.get('text') || '';
         try {
-            text = cache_md.find({'userId': userId}, {sort: {cTime: -1}}).fetch()[0]['raw_html'];
+            let o = cache_md.find({'userId': userId}, {sort: {cTime: -1}}).fetch()[0];
+            text = o.raw_html;
         } catch (e) {
             console.log('用户首次登录');
             console.log(e);
@@ -81,7 +89,7 @@ Template.head.events({
         }
         let react_text = this.templateDictionary.get('text');
         let react_entitle = this.headDictionary.get('tmp_entitle');
-        if((react_text != text && react_text.split('\n').join('') != '') || entitle != react_entitle){
+        if((react_text != undefined && react_text != text && react_text.split('\n').join('') != '') || entitle != react_entitle){
             cache_md.insert({  //这个操作 估计得放放服务器端
                 userId: userId,
                 entitle: entitle,
