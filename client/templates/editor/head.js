@@ -56,11 +56,6 @@ Template.head.onRendered(
 Template.head.onDestroyed(
     () => {
         clearInterval(interval);
-//        let c_mds = cache_md.find({'userId': this.headDictionary.get('uuid')});
-//        c_mds.forEach((c_md) => {
-//            cache_md.remove({'_id': c_md._id});
-//        });
-//        this.headDictionary.set('uuid', '');
     }
 );
 
@@ -69,8 +64,7 @@ Template.head.events({
         FlowRouter.go('/blog');
     },
     'click #fi-time': (e) => {
-        let tmp_db = cache_md.find().fetch();
-        if(tmp_db.length == 0) {
+        if(cache_md.find().fetch().length == 0) {
             return;
         }
         let userId = Meteor.userId();
