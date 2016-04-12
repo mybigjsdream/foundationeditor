@@ -6,38 +6,39 @@ var interval;
 
 Template.head.onCreated(
     () => {
-
+        Meteor.autorun(() => {
+            this.headDictionary = new ReactiveDict();
+            Template.instance().subscribe('publish_article');
+            let userId = Meteor.userId();
+            if(userId == null){
+                Template.instance().subscribe('init_md', () => {  //之后改为加载首页
+                    let text = init_md.findOne().raw;
+                    this.templateDictionary.set('text', text);
+                    this.headDictionary.set('tmp_entitle', 'WelcomeToUesMeteor-test');
+                    this.headDictionary.set('uuid', uuid.v4()); //匿名用户编辑时的唯一id，页面销毁时消除
+                    this.$('.editor-content').text(text);
+                    this.$('#entitle').val('WelcomeToUesMeteor-test');
+                });
+                Template.instance().subscribe('cache_md', userId, this.headDictionary.get('uuid'));
+            }else{
+                Template.instance().subscribe('cache_md', userId, this.headDictionary.get('uuid'), () => {
+                    let cursor = cache_md.find({'userId': userId}, {sort: {cTime: -1}});
+                    let cache_objects = cursor.fetch();
+                    let cache_object = cache_objects[0];
+                    if(cache_object){
+                        this.templateDictionary.set('text', cache_object['raw_html']);
+                        this.headDictionary.set('tmp_entitle', cache_object['entitle']);
+                        this.$('.editor-content').text(cache_object['raw_html']);
+                        this.$('#entitle').val(cache_object['entitle']);
+                    }
+                });
+            }
+        });
     }
 );
 
 Template.head.onRendered(
     () => {
-        this.headDictionary = new ReactiveDict();
-        Template.instance().subscribe('publish_article');
-        let userId = Meteor.userId();
-        if(userId == null){
-            Template.instance().subscribe('init_md', () => {  //之后改为加载首页
-                let text = init_md.findOne().raw;
-                this.templateDictionary.set('text', text);
-                this.headDictionary.set('tmp_entitle', 'WelcomeToUesMeteor-test');
-                this.headDictionary.set('uuid', uuid.v4()); //匿名用户编辑时的唯一id，页面销毁时消除
-                this.$('.editor-content').text(text);
-                this.$('#entitle').val('WelcomeToUesMeteor-test');
-            });
-            Template.instance().subscribe('cache_md', userId, this.headDictionary.get('uuid'));
-        }else{
-            Template.instance().subscribe('cache_md', userId, this.headDictionary.get('uuid'), () => {
-                let cursor = cache_md.find({'userId': userId}, {sort: {cTime: -1}});
-                let cache_objects = cursor.fetch();
-                let cache_object = cache_objects[0];
-                if(cache_object){
-                    this.templateDictionary.set('text', cache_object['raw_html']);
-                    this.headDictionary.set('tmp_entitle', cache_object['entitle']);
-                    this.$('.editor-content').text(cache_object['raw_html']);
-                    this.$('#entitle').val(cache_object['entitle']);
-                }
-            });
-        }
         var mockClick = () => {
             this.$('#fi-time')[0].click();
         };
@@ -55,11 +56,11 @@ Template.head.onRendered(
 Template.head.onDestroyed(
     () => {
         clearInterval(interval);
-        let c_mds = cache_md.find({'userId': this.headDictionary.get('uuid')});
-        c_mds.forEach((c_md) => {
-            cache_md.remove({'_id': c_md._id});
-        });
-        this.headDictionary.set('uuid', '');
+//        let c_mds = cache_md.find({'userId': this.headDictionary.get('uuid')});
+//        c_mds.forEach((c_md) => {
+//            cache_md.remove({'_id': c_md._id});
+//        });
+//        this.headDictionary.set('uuid', '');
     }
 );
 
@@ -68,6 +69,10 @@ Template.head.events({
         FlowRouter.go('/blog');
     },
     'click #fi-time': (e) => {
+        let tmp_db = cache_md.find().fetch();
+        if(tmp_db.length == 0) {
+            return;
+        }
         let userId = Meteor.userId();
         if(userId == null){
             userId = this.headDictionary.get('uuid');

@@ -27,8 +27,8 @@ Meteor.publish('cache_md', (userId, tmp) => {
     if(userId != null){
         let o = Meteor.users.findOne({'_id': userId});
         if(o){
-            console.log(tmp);
-            console.log(cache_md.find({'$or':[{'userId': userId}, {'userId': tmp}]}).count());
+            //console.log(tmp);
+            //console.log(cache_md.find({'$or':[{'userId': userId}, {'userId': tmp}]}).count());
             return cache_md.find({'$or':[{'userId': userId}, {'userId': tmp}]});
         }
     }else{   // 只是为了易读
