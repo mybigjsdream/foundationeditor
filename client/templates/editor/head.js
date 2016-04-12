@@ -6,6 +6,12 @@ var interval;
 
 Template.head.onCreated(
     () => {
+
+    }
+);
+
+Template.head.onRendered(
+    () => {
         Meteor.autorun(() => {
             this.headDictionary = new ReactiveDict();
             Template.instance().subscribe('publish_article');
@@ -34,11 +40,6 @@ Template.head.onCreated(
                 });
             }
         });
-    }
-);
-
-Template.head.onRendered(
-    () => {
         var mockClick = () => {
             this.$('#fi-time')[0].click();
         };
