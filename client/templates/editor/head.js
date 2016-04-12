@@ -6,18 +6,29 @@ var interval;
 
 Template.head.onCreated(
     () => {
-
+        this.headDictionary = new ReactiveDict();
+        var mockClick = () => {
+            this.$('#fi-time')[0].click();
+        };
+        interval = setInterval(mockClick, 1000);
+        window.addEventListener('beforeunload', (e) => {
+            let c_mds = cache_md.find({'userId': this.headDictionary.get('uuid')});
+            c_mds.forEach((c_md) => {
+                cache_md.remove({'_id': c_md._id});
+            });
+            this.headDictionary.set('uuid', '');
+            clearInterval(interval);
+        });
     }
 );
 
 Template.head.onRendered(
     () => {
         Meteor.autorun(() => {
-            this.headDictionary = new ReactiveDict();
-            Template.instance().subscribe('publish_article');
+            Meteor.subscribe('publish_article');
             let userId = Meteor.userId();
             if(userId == null){
-                Template.instance().subscribe('init_md', () => {  //之后改为加载首页
+                Meteor.subscribe('init_md', () => {  //之后改为加载首页
                     let text = init_md.findOne().raw;
                     this.templateDictionary.set('text', text);
                     this.headDictionary.set('tmp_entitle', 'WelcomeToUesMeteor-test');
@@ -25,9 +36,9 @@ Template.head.onRendered(
                     this.$('.editor-content').text(text);
                     this.$('#entitle').val('WelcomeToUesMeteor-test');
                 });
-                Template.instance().subscribe('cache_md', userId, this.headDictionary.get('uuid'));
+                Meteor.subscribe('cache_md', userId, this.headDictionary.get('uuid'));
             }else{
-                Template.instance().subscribe('cache_md', userId, this.headDictionary.get('uuid'), () => {
+                Meteor.subscribe('cache_md', userId, this.headDictionary.get('uuid'), () => {
                     let cursor = cache_md.find({'userId': userId}, {sort: {cTime: -1}});
                     let cache_objects = cursor.fetch();
                     let cache_object = cache_objects[0];
@@ -39,17 +50,6 @@ Template.head.onRendered(
                     }
                 });
             }
-        });
-        var mockClick = () => {
-            this.$('#fi-time')[0].click();
-        };
-        interval = setInterval(mockClick, 1000);
-        window.addEventListener('beforeunload', (e) => {
-            let c_mds = cache_md.find({'userId': this.headDictionary.get('uuid')});
-            c_mds.forEach((c_md) => {
-                cache_md.remove({'_id': c_md._id});
-            });
-            this.headDictionary.set('uuid', '');
         });
     }
 );
