@@ -3,29 +3,17 @@
  */
 Template.blog_sticky_list.onRendered(
     () => {
-        //$(document).foundation($('.sticky'), 'reflow');
-        //this.sticky = new Foundation.Sticky($('.sticky'));
-        //setTimesetTimeout(() => {$('.sticky').foundation();},1000);
         Template.instance().autorun(() => {
             Template.instance().subscribe('article_author_view');
             Template.instance().subscribe('article_category_view');
         });
-        //Template.instance().subscribe('article_author_view', () => {$(document).foundation();});
-        //Template.instance().subscribe('article_category_view', () => {$(document).foundation();});
         $(window).on('scroll', () => {
             if(this.tmp_sticky)
                 return;
             this.tmp_sticky = $(document).foundation();
-            //console.log(this.tmp_sticky);
         });
     }
 );
-
-//Template.blog_sticky_list.events({
-//    'scroll body': (e) => {
-//        console.log('aaa');
-//    }
-//});
 
 Template.blog_sticky_list.helpers({
     categories: () => {
