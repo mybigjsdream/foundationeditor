@@ -23,7 +23,6 @@ Template.blog_content.onCreated(() => {
     Template.instance().autorun(() => {
         let path = FlowRouter.getParam('year')+'/'+FlowRouter.getParam('month')+
                     '/'+FlowRouter.getParam('day')+'/'+FlowRouter.getParam('title');
-        console.log(path);
         Template.instance().subscribe('publish_article', () => {
             let cursor = publish_article.find({urlPath: path});
             let one = cursor.fetch()[0];

@@ -7,6 +7,7 @@ Template.blog_sticky_list.onRendered(
             Template.instance().subscribe('article_author_view');
             Template.instance().subscribe('article_category_view');
         });
+        this.tmp_sticky = null;
         $(window).on('scroll', () => {
             if(this.tmp_sticky)
                 return;
