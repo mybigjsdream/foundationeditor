@@ -8,22 +8,12 @@ page_size = 3;
 
 Template.blog_list.onRendered(
     () => {
-        //this.sticky = new Foundation.Sticky($('.sticky'));
-        $(document).foundation();
+        //$(document).foundation();
         Template.instance().autorun(() => {
             let category = FlowRouter.getParam('category');
             let author = FlowRouter.getParam('author');
             Template.instance().subscribe('publish_article', null, category, author);
         });
-    }
-);
-
-Template.blog_list.onDestroyed(
-    () => {
-        //let sticky = this.sticky;
-        //if (sticky) {
-            //$('.sticky').foundation('destroy');
-        //}
     }
 );
 
