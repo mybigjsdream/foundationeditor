@@ -3,7 +3,8 @@
  */
 Template.blog_sticky_list.onRendered(
     () => {
-        $(document).foundation();
+        //$(document).foundation($('.sticky'), 'reflow');
+        //this.sticky = new Foundation.Sticky($('.sticky'));
         //setTimesetTimeout(() => {$('.sticky').foundation();},1000);
         Template.instance().autorun(() => {
             Template.instance().subscribe('article_author_view');
