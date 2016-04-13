@@ -187,7 +187,7 @@ Template.head.events({
                     FlowRouter.go(`/blog/${article.url_path}`);
                 }else{
                     if(!status.is_login){
-                        alert('今天已有匿名用户发表此主题');
+                        alert('今天已有用户发表此主题');
                         return;
                     }
                     if(one.userName != userName){
