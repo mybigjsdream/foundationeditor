@@ -11,8 +11,8 @@ Template.head.onCreated(
         Meteor.autorun(() => {
             let userId = Meteor.userId();
             if(userId == null){
-                this.cache_ready = Meteor.subscribe('cache_md', userId, this.headDictionary.get('uuid'));
-                Meteor.subscribe('init_md', () => {  //之后改为加载首页
+                this.cache_ready = Template.instance().subscribe('cache_md', userId, this.headDictionary.get('uuid'));
+                Template.instance().subscribe('init_md', () => {  //之后改为加载首页
                     let text = init_md.findOne().raw;
                     this.templateDictionary.set('text', text);
                     this.headDictionary.set('tmp_entitle', 'WelcomeToUesMeteor-test');
@@ -21,7 +21,7 @@ Template.head.onCreated(
                     this.$('#entitle').val('WelcomeToUesMeteor-test');
                 });
             }else{
-                this.cache_ready = Meteor.subscribe('cache_md', userId, this.headDictionary.get('uuid'), () => {
+                this.cache_ready = Template.instance().subscribe('cache_md', userId, this.headDictionary.get('uuid'), () => {
                     let cursor = cache_md.find({'userId': userId}, {sort: {cTime: -1}});
                     let cache_objects = cursor.fetch();
                     let cache_object = cache_objects[0];
