@@ -7,8 +7,8 @@ var interval;
 Template.head.onCreated(
     () => {
         this.headDictionary = new ReactiveDict();
-        Meteor.subscribe('publish_article');
         Meteor.autorun(() => {
+            Template.instance().subscribe('publish_article');
             let userId = Meteor.userId();
             if(userId == null){
                 this.cache_ready = Meteor.subscribe('cache_md', userId, this.headDictionary.get('uuid'));

@@ -3,13 +3,14 @@
  */
 Meteor.publish('publish_article', (id, category, userName) => {
     //check(id, String);
+    var re;
     if(id == null && category == null && userName == null)
-        return publish_article.find();
+        re = publish_article.find();
     if(id) {
-        return publish_article.find({'_id': id});
+        re = publish_article.find({'_id': id});
     }
     if(userName) {
-        return publish_article.find({'userName': userName});
+        re = publish_article.find({'userName': userName});
     }
     if(category) {
         let category_ids = article_category_view.find({'category': category});
@@ -17,8 +18,9 @@ Meteor.publish('publish_article', (id, category, userName) => {
         category_ids.forEach((o) => {
             ids.push(o.id);
         });
-        return publish_article.find({'_id': {$in: ids}});
+        re = publish_article.find({'_id': {$in: ids}});
     }
+    return re;
 });
 
 Meteor.publish('cache_md', (userId, tmp) => {
