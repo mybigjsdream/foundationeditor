@@ -40,4 +40,9 @@
         </ul>
     </div>
     <input id="fi-time" type="hidden"/>
+    {{#if ready}}
+        <input id="ready" type="hidden"/>
+    {{else}}
+        {{> spinner}}
+    {{/if}}
 </template>
