@@ -81,7 +81,7 @@ Template.head.events({
         FlowRouter.go('/blog');
     },
     'click #fi-time': (e) => {
-        if(cache_md.find().fetch().length == 0) {
+        if(!this.headDictionary.get('cache_ready')){
             return;
         }
         let userId = Meteor.userId();
