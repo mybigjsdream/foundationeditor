@@ -56,11 +56,9 @@ Template.head.onRendered(
             let t = this.cache_ready;
             if(!t.ready()){
                 this.headDictionary.set('cache_ready', false);
-                console.log(t.ready());
             }
             else{
                 this.headDictionary.set('cache_ready', true);
-                console.log(t.ready());
             }
         });
     }
