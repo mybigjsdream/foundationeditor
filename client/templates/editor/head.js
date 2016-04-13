@@ -7,6 +7,33 @@ var interval;
 Template.head.onCreated(
     () => {
         this.headDictionary = new ReactiveDict();
+        Meteor.subscribe('publish_article');
+        Meteor.autorun(() => {
+            let userId = Meteor.userId();
+            if(userId == null){
+                Meteor.subscribe('cache_md', userId, this.headDictionary.get('uuid'));
+                Meteor.subscribe('init_md', () => {  //之后改为加载首页
+                    let text = init_md.findOne().raw;
+                    this.templateDictionary.set('text', text);
+                    this.headDictionary.set('tmp_entitle', 'WelcomeToUesMeteor-test');
+                    this.headDictionary.set('uuid', uuid.v4()); //匿名用户编辑时的唯一id，页面销毁时消除
+                    this.$('.editor-content').text(text);
+                    this.$('#entitle').val('WelcomeToUesMeteor-test');
+                });
+            }else{
+                Meteor.subscribe('cache_md', userId, this.headDictionary.get('uuid'), () => {
+                    let cursor = cache_md.find({'userId': userId}, {sort: {cTime: -1}});
+                    let cache_objects = cursor.fetch();
+                    let cache_object = cache_objects[0];
+                    if(cache_object){
+                        this.templateDictionary.set('text', cache_object['raw_html']);
+                        this.headDictionary.set('tmp_entitle', cache_object['entitle']);
+                        this.$('.editor-content').text(cache_object['raw_html']);
+                        this.$('#entitle').val(cache_object['entitle']);
+                    }
+                });
+            }
+        });
         var mockClick = () => {
             this.$('#fi-time')[0].click();
         };
@@ -22,37 +49,36 @@ Template.head.onCreated(
     }
 );
 
-Template.head.onRendered(
-    () => {
-        Meteor.autorun(() => {
-            Meteor.subscribe('publish_article');
-            let userId = Meteor.userId();
-            if(userId == null){
-                Meteor.subscribe('init_md', () => {  //之后改为加载首页
-                    let text = init_md.findOne().raw;
-                    this.templateDictionary.set('text', text);
-                    this.headDictionary.set('tmp_entitle', 'WelcomeToUesMeteor-test');
-                    this.headDictionary.set('uuid', uuid.v4()); //匿名用户编辑时的唯一id，页面销毁时消除
-                    this.$('.editor-content').text(text);
-                    this.$('#entitle').val('WelcomeToUesMeteor-test');
-                });
-                Meteor.subscribe('cache_md', userId, this.headDictionary.get('uuid'));
-            }else{
-                Meteor.subscribe('cache_md', userId, this.headDictionary.get('uuid'), () => {
-                    let cursor = cache_md.find({'userId': userId}, {sort: {cTime: -1}});
-                    let cache_objects = cursor.fetch();
-                    let cache_object = cache_objects[0];
-                    if(cache_object){
-                        this.templateDictionary.set('text', cache_object['raw_html']);
-                        this.headDictionary.set('tmp_entitle', cache_object['entitle']);
-                        this.$('.editor-content').text(cache_object['raw_html']);
-                        this.$('#entitle').val(cache_object['entitle']);
-                    }
-                });
-            }
-        });
-    }
-);
+//Template.head.onRendered(
+//    () => {
+//        Meteor.autorun(() => {
+//            let userId = Meteor.userId();
+//            if(userId == null){
+//                Meteor.subscribe('init_md', () => {  //之后改为加载首页
+//                    let text = init_md.findOne().raw;
+//                    this.templateDictionary.set('text', text);
+//                    this.headDictionary.set('tmp_entitle', 'WelcomeToUesMeteor-test');
+//                    this.headDictionary.set('uuid', uuid.v4()); //匿名用户编辑时的唯一id，页面销毁时消除
+//                    this.$('.editor-content').text(text);
+//                    this.$('#entitle').val('WelcomeToUesMeteor-test');
+//                });
+//                Meteor.subscribe('cache_md', userId, this.headDictionary.get('uuid'));
+//            }else{
+//                Meteor.subscribe('cache_md', userId, this.headDictionary.get('uuid'), () => {
+//                    let cursor = cache_md.find({'userId': userId}, {sort: {cTime: -1}});
+//                    let cache_objects = cursor.fetch();
+//                    let cache_object = cache_objects[0];
+//                    if(cache_object){
+//                        this.templateDictionary.set('text', cache_object['raw_html']);
+//                        this.headDictionary.set('tmp_entitle', cache_object['entitle']);
+//                        this.$('.editor-content').text(cache_object['raw_html']);
+//                        this.$('#entitle').val(cache_object['entitle']);
+//                    }
+//                });
+//            }
+//        });
+//    }
+//);
 
 Template.head.onDestroyed(
     () => {
@@ -89,7 +115,11 @@ Template.head.events({
         }
         let react_text = this.templateDictionary.get('text');
         let react_entitle = this.headDictionary.get('tmp_entitle');
-        if((react_text != undefined && react_text != text && react_text.split('\n').join('') != '') || entitle != react_entitle){
+        if((react_text != undefined && react_entitle != undefined && react_text != text
+            && react_text.split('\n').join('') != '') || entitle != react_entitle){
+            if(react_text.split('\n').join('') == '' && react_entitle.split('\n').join('') == ''){
+                return;
+            }
             cache_md.insert({  //这个操作 估计得放放服务器端
                 userId: userId,
                 entitle: entitle,
