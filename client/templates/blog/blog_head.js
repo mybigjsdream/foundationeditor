@@ -10,6 +10,6 @@ Template.blog_head.events({
         FlowRouter.go('/editor');
     },
     'click #blog-about': (e) => {
-        FlowRouter.go('/404');
+        FlowRouter.go('/about');
     },
 });
