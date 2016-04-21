@@ -29,6 +29,9 @@ Template.blog_content.onCreated(() => {
             if(one){
                 //blog_content = one.text;
                 this.blogDictionary.set('text', one.text);
+                this.blogDictionary.set('raw', one.raw);
+                this.blogDictionary.set('en_title', one.en_title);
+                this.blogDictionary.set('userId', one.userId);
                 this.blogDictionary.set('title', one.title);
                 this.blogDictionary.set('cTime', one.cTime);
                 this.blogDictionary.set('updateTime', one.updateTime);
@@ -38,6 +41,15 @@ Template.blog_content.onCreated(() => {
             }
         });
     });
+});
+
+Template.blog_content.events({
+    'click .hollow': (e) => {
+        const entitle = this.blogDictionary.get('en_title');
+        const raw = this.blogDictionary.get('raw');
+        FlowRouter.setQueryParams({'entitle': entitle, 'raw': raw});
+        FlowRouter.go('/blog/update');
+    }
 });
 
 Template.blog_content.helpers({
@@ -60,5 +72,25 @@ Template.blog_content.helpers({
         let share = '<wb:share-button appkey="2953312031" addition="simple" ' +
                     'type="button" default_text=":)"></wb:share-button>';
         return share;
+    },
+    isUpdate: () => {
+        let user = Meteor.user();
+        let userName = '';
+        if(user == null)
+            userName = '匿名';
+        else{
+            if (user.profile && user.profile.name)  //这一部分  记得重构
+                userName = user.profile.name;
+            else
+                userName = user.emails[0].address;
+        }
+        const userId = this.blogDictionary.get('userId');
+        if(userName == 'shanyue2014') {  //这个应该放服务器端
+            return true;
+        }
+        if(Meteor.userId() == userId && userId != undefined) {
+            return true;
+        }
+        return false;
     }
 });

@@ -1,0 +1,48 @@
+<template name="blog_update">
+    <div class="top-bar-left">
+        <ul class="menu">
+            <li class="menu-text"><span id="blog-home"><a>Ofoever</a></span></li>
+            <li>{{> loginButtons}}</li>
+        </ul>
+    </div>
+    <div class="top-bar-right">
+        <ul class="menu">
+            <li>
+                <input id="entitle" type="search" placeholder="(格式:WelcomeToUesMeteor-Category1-Category2)">
+            </li>
+            <li>
+                <div class="button-group">
+                    <a id="fi-arrow-left" class="button"><i class="fi-arrow-left"></i></a>
+                    <a id="fi-monitor" class="button"><i class="fi-monitor"></i></a>
+                </div>
+            </li>
+            <li>
+                <div class="button-group">
+                    <a id="fi-bold" class="button"><i class="fi-bold"></i></a>
+                    <a id="fi-italic" class="button"><i class="fi-italic"></i></a>
+                </div>
+            </li>
+            <li>
+                <div class="button-group">
+                    <a id="fi-link" class="button"><i class="fi-link"></i></a>
+                    <a id="fi-quote" class="button"><i class="fi-quote"></i></a>
+                    <a id="fi-book" class="button"><i class="fi-book"></i></a>
+                    <a id="fi-photo" class="button"><i class="fi-photo"></i></a>
+                </div>
+            </li>
+            <li>
+                <div class="button-group">
+                    <a id="fi-list-bullet" class="button"><i class="fi-list-bullet"></i></a>
+                    <a id="fi-asterisk" class="button"><i class="fi-asterisk"></i></a>
+                    <a id="fi-minus" class="button"><i class="fi-minus"></i></a>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <input id="fi-time" type="hidden"/>
+    {{#if ready}}
+        <input id="ready" type="hidden"/>
+    {{else}}
+        {{> spinner}}
+    {{/if}}
+</template>

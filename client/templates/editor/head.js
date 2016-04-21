@@ -154,14 +154,23 @@ Template.head.events({
         }
         var current_time = new Date();
         let base_content = this.$('.base-content')[0].children;
+        let en_title = this.$('#entitle')[0].value.toString();
         let Categories = this.$('#entitle')[0].value.toString().split('-').slice(1);
         let url_path = moment().format('YYYY/MM/DD') + '/' + this.$('#entitle')[0].value.toString().split('-')[0];
         let id = CryptoJS.MD5(url_path + Meteor.userId()).toString(); //逻辑应该是没登录的不能发表别的匿名用户已经发表过的主题
+        let raw = this.templateDictionary.get('text');
+        if($.trim(raw) == ''){
+            alert('正文不能为空');
+            return
+        }
         var article = {
             id: id,
             userName: userName,
+            userId: Meteor.userId() || '',
             Categories: Categories,
             url_path: url_path,
+            en_title: en_title,
+            raw: raw,
             title: base_content[0].outerHTML,
             text: Array.from(base_content, x => x.outerHTML).splice(1).join('')
         };
@@ -178,9 +187,12 @@ Template.head.events({
                         _id: article.id,
                         title: article.title,
                         text: article.text,
+                        raw: article.raw,
+                        en_title: en_title,
                         Categories: article.Categories,
                         urlPath: article.url_path,
                         userName: article.userName,
+                        userId: article.userId,
                         cTime: current_time.getTime(),
                         updateTime: current_time.getTime()
                     });
@@ -203,8 +215,11 @@ Template.head.events({
                                 title: article.title,
                                 text: article.text,
                                 urlPath: article.url_path,
+                                en_title: en_title,
+                                raw: article.raw,
                                 Categories: article.Categories,
                                 userName: article.userName,
+                                userId: article.userId,
                                 updateTime: current_time.getTime()
                             }
                         }

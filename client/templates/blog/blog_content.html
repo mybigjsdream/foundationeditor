@@ -2,6 +2,9 @@
     <div class="blog_content">
         <div class="base-content">
             {{{blog_title}}}
+            {{#if isUpdate}}
+                <a class="tiny hollow button">修改</a>
+            {{/if}}
             <div class="tit">
                 上次修改时间：{{blog_ut}} <br>
                 {{{weibo}}}
