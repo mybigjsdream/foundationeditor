@@ -29,6 +29,7 @@ Template.blog_content.onCreated(() => {
             if(one){
                 //blog_content = one.text;
                 this.blogDictionary.set('text', one.text);
+                this.blogDictionary.set('id', one._id);
                 this.blogDictionary.set('raw', one.raw);
                 this.blogDictionary.set('en_title', one.en_title);
                 this.blogDictionary.set('userId', one.userId);
@@ -45,10 +46,8 @@ Template.blog_content.onCreated(() => {
 
 Template.blog_content.events({
     'click .hollow': (e) => {
-        const entitle = this.blogDictionary.get('en_title');
-        const raw = this.blogDictionary.get('raw');
-        FlowRouter.setQueryParams({'entitle': entitle, 'raw': raw});
-        FlowRouter.go('/blog/update');
+        const id = this.blogDictionary.get('id');
+        FlowRouter.go(`/blog/update?id=${id}`);
     }
 });
 
@@ -77,7 +76,6 @@ Template.blog_content.helpers({
         return this.blogDictionary.isReady.ready();
     },
     isUpdate: () => {
-        console.log(this.blogDictionary.isReady.ready());
         let userId = this.blogDictionary.get('userId');
         let user = Meteor.user();
         let userName = '';
@@ -92,9 +90,6 @@ Template.blog_content.helpers({
         if(userName == 'shanyue2014') {  //这个应该放服务器端
             return true;
         }
-        console.log('xxx'+ userId);
-        console.log('sss'+ Meteor.userId());
-        console.log(Meteor.userId() == userId);
         if(Meteor.userId() == userId) {
             return true;
         }

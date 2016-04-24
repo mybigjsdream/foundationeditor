@@ -3,6 +3,12 @@
  */
 //import moment from 'moment';
 
+Template.blog_update.onCreated(
+    () => {
+
+    }
+);
+
 Template.blog_update.onRendered(
     () => {
         Template.instance().autorun(() => {
