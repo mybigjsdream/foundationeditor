@@ -9,7 +9,7 @@ Template.blog_update.onCreated(
     () => {
         this.updateDictionary = new ReactiveDict();
         blog_id = FlowRouter.getQueryParam('id'); //考虑为none时的安全因素？
-        Meteor.autorun(() => {
+        Template.instance().autorun(() => {
             //这里是不是也存在个  已经存在订阅的问题呢？ 应该使用this.template而非meteor？
             this.updateDictionary.publish_ready = Meteor.subscribe('publish_article', blog_id);
         });
@@ -18,11 +18,10 @@ Template.blog_update.onCreated(
 
 Template.blog_update.onRendered(
     () => {
-        Meteor.autorun(() => {
+        Template.instance().autorun(() => {
             if(this.updateDictionary.publish_ready.ready()){
                 const publish = publish_article.findOne({'_id': blog_id});
-                console.log(publish);
-                if(Meteor.userId() != publish.userId){
+                if(Meteor.userId() != publish.userId || Meteor.userId() != 'PZGA95t8YH9FzJ9QK'){
                     alert('非法修改不属于自己的文章！');
                     FlowRouter.go('/blog');
                     return;
