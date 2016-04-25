@@ -21,7 +21,7 @@ Template.blog_update.onRendered(
         Template.instance().autorun(() => {
             if(this.updateDictionary.publish_ready.ready()){
                 const publish = publish_article.findOne({'_id': blog_id});
-                if(Meteor.userId() != publish.userId || Meteor.userId() != 'PZGA95t8YH9FzJ9QK'){
+                if(Meteor.userId() != publish.userId && Meteor.userId() != 'PZGA95t8YH9FzJ9QK'){
                     alert('非法修改不属于自己的文章！');
                     FlowRouter.go('/blog');
                     return;
