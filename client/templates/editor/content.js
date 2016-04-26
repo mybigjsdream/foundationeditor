@@ -49,6 +49,14 @@ Template.content.onCreated(
     }
 );
 
+Template.content.onRendered(
+    () => {
+        let h = document.documentElement.clientHeight;
+        this.$('.preview-content').css('height', h-70);
+        this.$('.editor-content').css('height', h-70);
+    }
+);
+
 Template.content.helpers({
     content: () => {
         marked.setOptions({

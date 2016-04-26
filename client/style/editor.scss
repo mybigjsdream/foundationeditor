@@ -43,7 +43,7 @@ $base-content-height: 31rem;
   word-wrap:break-word;
   outline:none;
   min-height: $base-content-height+7rem; //测试
-  height: $base-content-height+7rem;
+  //height: $base-content-height+7rem;
 }
 
 //预览部分的布局
@@ -55,7 +55,7 @@ $base-content-height: 31rem;
 
 .preview-content {
   min-height: $base-content-height+7rem; //测试
-  height:  $base-content-height+7rem;
+  //height:  $base-content-height+7rem;
 }
 //渲染完成后的通用布局
 @import "preview";

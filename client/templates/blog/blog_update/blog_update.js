@@ -18,6 +18,9 @@ Template.blog_update.onCreated(
 
 Template.blog_update.onRendered(
     () => {
+        let h = document.documentElement.clientHeight;
+        this.$('.preview-content').css('height', h-70);
+        this.$('.editor-content').css('height', h-70);
         Template.instance().autorun(() => {
             if(this.updateDictionary.publish_ready.ready()){
                 const publish = publish_article.findOne({'_id': blog_id});

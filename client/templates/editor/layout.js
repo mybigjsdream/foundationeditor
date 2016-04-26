@@ -14,3 +14,10 @@ Template.layout.onCreated(() => {
     document.getElementsByTagName('head')[0].appendChild(elem);
     $('html').attr("xmlns:wb","http://open.weibo.com/wb");
 });
+
+//Template.layout.onRendered(() => {
+//    let h = document.documentElement.clientHeight;
+//    let th = this.$('.top-bar').height();
+//    let fh = this.$('.row').height();
+//    this.$('.base-content').css('min-height', h-th-fh);
+//});
