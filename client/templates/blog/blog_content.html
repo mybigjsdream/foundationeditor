@@ -12,5 +12,9 @@
             </div>
             {{{blog_text}}}
         </div>
+        {{#if isReady}}
+        {{else}}
+            {{> spinner}}
+        {{/if}}
     </div>
 </template>

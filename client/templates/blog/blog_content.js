@@ -69,14 +69,11 @@ Template.blog_content.helpers({
         return this.blogDictionary.get('userName');
     },
     weibo: () => {
-        return this.blogDictionary.get('share') || '';
+        let share = '<wb:share-button appkey="2953312031" addition="simple" type="button"' +
+                    ' ralateUid="5211538803" default_text=":)"></wb:share-button>';
+        return share;
     },
     isReady: () => {
-        if(this.blogDictionary.isReady.ready()){
-            const share = '<wb:share-button appkey="2953312031" addition="simple" type="button"' +
-                ' ralateUid="5211538803" default_text=":)"></wb:share-button>';
-            this.blogDictionary.set('share', share);
-        }
         return this.blogDictionary.isReady.ready();
     },
     isUpdate: () => {
