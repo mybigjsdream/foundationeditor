@@ -1,6 +1,5 @@
 <template name="blog_content">
     <div class="blog_content">
-        {{#if isReady}}
         <div class="base-content">
             {{{blog_title}}}
             {{#if isUpdate}}
@@ -13,8 +12,5 @@
             </div>
             {{{blog_text}}}
         </div>
-        {{else}}
-            {{> spinner}}
-        {{/if}}
     </div>
 </template>

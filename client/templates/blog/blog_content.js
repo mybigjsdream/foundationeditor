@@ -11,6 +11,7 @@ Template.blog_content.onRendered(() => {
     link.href = '/favicon.ico';
     var elem = document.createElement('script');
     elem.type = 'text/javascript';
+    elem.charset = 'utf-8';
     elem.src = 'http://tjs.sjs.sinajs.cn/open/api/js/wb.js';
     document.getElementsByTagName('head')[0].appendChild(link);
     document.getElementsByTagName('head')[0].appendChild(elem);
@@ -68,11 +69,14 @@ Template.blog_content.helpers({
         return this.blogDictionary.get('userName');
     },
     weibo: () => {
-        let share = '<wb:share-button appkey="2953312031" addition="simple" ' +
-                    'type="button" default_text=":)"></wb:share-button>';
-        return share;
+        return this.blogDictionary.get('share') || '';
     },
     isReady: () => {
+        if(this.blogDictionary.isReady.ready()){
+            const share = '<wb:share-button appkey="2953312031" addition="simple" type="button"' +
+                ' ralateUid="5211538803" default_text=":)"></wb:share-button>';
+            this.blogDictionary.set('share', share);
+        }
         return this.blogDictionary.isReady.ready();
     },
     isUpdate: () => {
