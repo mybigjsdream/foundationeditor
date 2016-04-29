@@ -46,7 +46,7 @@ Template.blog_content.onCreated(() => {
 });
 
 Template.blog_content.events({
-    'click .hollow': (e) => {
+    'click .hollow': () => {
         const id = this.blogDictionary.get('id');
         FlowRouter.go(`/blog/update?id=${id}`);
     }
@@ -88,12 +88,6 @@ Template.blog_content.helpers({
             else
                 userName = user.emails[0].address;
         }
-        if(userName == 'shanyue2014') {  //这个应该放服务器端
-            return true;
-        }
-        if(Meteor.userId() == userId) {
-            return true;
-        }
-        return false;
+        return userName == 'shanyue2014' ? true : Meteor.userId() == userId;
     }
 });

@@ -76,7 +76,7 @@ var getCurrentLine = (currentRange) => {
     return i;
 };
 
-var scrollPre = (e) => {
+var scrollPre = () => {
     this.updateDictionary.set('raw', this.$('.editor-content')[0].innerText);
     var line = getCurrentLine(window.getSelection().getRangeAt(0));
     var count = 0;
@@ -102,10 +102,10 @@ Template.blog_update.events({ //58 根据字体确定
         scrollPre(e);
         this.updateDictionary.set('back_count', 0);
     },
-    'click #blog-home': (e) => {
+    'click #blog-home': () => {
         FlowRouter.go('/blog');
     },
-    'click #fi-monitor': (e) => {
+    'click #fi-monitor': () => {
         var current_time = new Date();
         let en_title = this.$('#entitle')[0].value.toString();
         let Categories = this.$('#entitle')[0].value.toString().split('-').slice(1);
