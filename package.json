@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "aws-sdk": "^2.3.7",
     "jquery": "^2.2.2",
     "meteor-node-stubs": "^0.2.1",
     "node-uuid": "^1.4.7"
