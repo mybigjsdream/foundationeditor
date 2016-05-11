@@ -13,7 +13,9 @@ Template.blog_list.onRendered(
             let search = FlowRouter.getQueryParam("search");
             if(search) {
                 console.log('haha');
-                console.log(search);
+                console.log(search.split(','));
+                let ids = search.split(',');
+                Template.instance().subscribe('publish_article', null, null, null, ids);
             } else {
                 let category = FlowRouter.getParam('category');
                 let author = FlowRouter.getParam('author');
