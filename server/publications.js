@@ -1,13 +1,16 @@
 /**
  * Created by dengjing on 16/3/8.
  */
-Meteor.publish('publish_article', (id, category, userName) => {
+Meteor.publish('publish_article', (id, category, userName, ids) => {
     //check(id, String);
     var re;
     if(id == null && category == null && userName == null)
         re = publish_article.find();
     if(id) {
         re = publish_article.find({'_id': id});
+    }
+    if(ids) {
+        re = publish_article.find({'_id': {'$in': ids}})
     }
     if(userName) {
         re = publish_article.find({'userName': userName});

@@ -22,7 +22,11 @@ Template.blog_head.events({
                 console.log('error');
             } else {
                 console.log('success');
-                console.log(r);
+                let hits = r.data.hits;
+                console.log(r.data.hits);
+                let s = _.map(hits, (h) => h._id).join(',');
+                console.log(s);
+                FlowRouter.go(`/blog?search=${s}`);
             }
         });
     }

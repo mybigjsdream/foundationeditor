@@ -10,9 +10,15 @@ Template.blog_list.onRendered(
     () => {
         //$(document).foundation();
         Template.instance().autorun(() => {
-            let category = FlowRouter.getParam('category');
-            let author = FlowRouter.getParam('author');
-            Template.instance().subscribe('publish_article', null, category, author);
+            let search = FlowRouter.getQueryParam("search");
+            if(search) {
+                console.log('haha');
+                console.log(search);
+            } else {
+                let category = FlowRouter.getParam('category');
+                let author = FlowRouter.getParam('author');
+                Template.instance().subscribe('publish_article', null, category, author);
+            }
         });
     }
 );
