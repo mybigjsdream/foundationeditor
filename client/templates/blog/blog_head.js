@@ -14,18 +14,13 @@ Template.blog_head.events({
     },
     'click .button': (e) => {
         let q = this.$('#search-text')[0].value;
-        const url = `http://182.92.220.227:8088/es/search?q=${q}`;
-        console.log(url);
         Meteor.call('esHandle', q, (e, r) => {
             if(e) {
                 console.log(e);
                 console.log('error');
             } else {
-                console.log('success');
                 let hits = r.data.hits;
-                console.log(r.data.hits);
                 let s = _.map(hits, (h) => h._id).join(',');
-                console.log(s);
                 FlowRouter.go(`/blog?search=${s}`);
             }
         });
