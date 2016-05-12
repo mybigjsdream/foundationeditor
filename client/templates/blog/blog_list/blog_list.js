@@ -2,13 +2,11 @@
  * Created by dengjing on 16/3/26.
  */
 //import moment from 'moment';
-moment.locale('zh-cn');
 
 page_size = 3;
 
 Template.blog_list.onRendered(
     () => {
-        //$(document).foundation();
         Template.instance().autorun(() => {
             let search = FlowRouter.getQueryParam("search");
             if(search) {
@@ -27,6 +25,7 @@ Template.blog_list.onRendered(
 
 Template.blog_list.helpers({
     posts: () => {
+        moment.locale('zh-cn');
         var ret_obj = [];
         var get_first_img = (o) => {
             let tmp = [];
