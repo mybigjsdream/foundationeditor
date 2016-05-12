@@ -2,7 +2,6 @@
  * Created by dengjing on 16/3/8.
  */
 Meteor.publish('publish_article', (id, category, userName, ids) => {
-    //check(id, String);
     var re;
     if(id == null && category == null && userName == null)
         re = publish_article.find();
