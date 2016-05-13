@@ -4,21 +4,6 @@
 
 Template.blog_head.onCreated(
     () => {
-        //var elasticsearch = require('elasticsearch');
-        //this.es_client = new elasticsearch.Client({
-        //    host: '182.92.220.227:8008',
-        //    log: 'trace'
-        //});
-        //this.es_client.ping({
-        //    requestTimeout: 30000,
-        //    hello: "elasticsearch"
-        //}, function (error) {
-        //    if (error) {
-        //        console.error('elasticsearch cluster is down!');
-        //    } else {
-        //        console.log('All is well');
-        //    }
-        //});
     }
 );
 
