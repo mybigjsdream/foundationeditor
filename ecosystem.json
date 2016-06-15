@@ -10,7 +10,7 @@
       env: {
         NODE_ENV: "production",
         MONGO_URL: "mongodb://root:dengjing@oforever.net:27017/meteor",
-        MONGO_OPLOG_URL: "mongodb://root:dengjing@oforever.net:27017/meteor",
+        MONGO_OPLOG_URL: "mongodb://root:dengjing@oforever.net:27017/local",
         ROOT_URL: "http://oforever.net",
         PORT: "3000"
       }
